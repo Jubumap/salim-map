@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>우리집 살림 도장깨기 지도 · 주부지도</title>
+<style>
+  :root{
+    --paper:#f6efe2; --paper2:#efe4cf; --ink:#3a3128; --ink-soft:#6b5d49;
+    --line:#d9c9a8; --line2:#c9b489;
+    --green:#4a8f5b; --green-d:#3a7449; --green-l:#e6f0e2;
+    --gold:#d99a2b; --gold-l:#f5e2b0;
+    --rose:#c96b5b; --sky:#6b9bc9;
+    --lock:#b9ab92;
+    --shadow:0 6px 0 rgba(58,49,40,.12);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",-apple-system,system-ui,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 12% 8%, #fff8ec 0, transparent 40%),
+      radial-gradient(circle at 88% 92%, #fff8ec 0, transparent 40%),
+      var(--paper);
+    background-attachment:fixed;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:90px;
+  }
+  .wrap{max-width:520px; margin:0 auto; padding:0 16px;}
+
+  /* ===== Header ===== */
+  header{padding:22px 0 8px; text-align:center;}
+  .badge{display:inline-block; font-size:12px; letter-spacing:.5px; color:var(--green-d);
+    background:var(--green-l); border:1.5px solid #cfe3c8; padding:4px 12px; border-radius:999px; font-weight:800;}
+  h1{font-size:26px; margin:12px 0 4px; letter-spacing:-.5px; font-weight:900;}
+  h1 .em{color:var(--green-d);}
+  .slogan{font-size:13.5px; color:var(--ink-soft); margin:0; font-weight:600;}
+
+  /* ===== Rank / progress panel ===== */
+  .panel{
+    background:linear-gradient(180deg,#fffaf0,#f3e8d3);
+    border:2px solid var(--line2); border-radius:20px;
+    padding:16px 16px 18px; margin:16px 0 8px; box-shadow:var(--shadow);
+  }
+  .rankrow{display:flex; align-items:center; gap:12px;}
+  .rankmedal{
+    width:54px; height:54px; flex:0 0 54px; border-radius:16px;
+    display:flex; align-items:center; justify-content:center; font-size:28px;
+    background:radial-gradient(circle at 35% 30%,#ffe9b0,#e7b24d);
+    border:2px solid #c98f2a; box-shadow:inset 0 -3px 0 rgba(0,0,0,.08);
+  }
+  .rankmeta{flex:1; min-width:0;}
+  .rankttl{font-size:12px; color:var(--ink-soft); font-weight:700;}
+  .rankname{font-size:19px; font-weight:900; letter-spacing:-.3px; line-height:1.2;}
+  .rankpct{font-size:13px; font-weight:800; color:var(--green-d);}
+  .bar{height:14px; background:#e5d6ba; border-radius:999px; margin-top:12px; overflow:hidden; border:1.5px solid #d3bf98;}
+  .bar > i{display:block; height:100%; width:0;
+    background:repeating-linear-gradient(45deg,var(--green),var(--green) 10px,var(--green-d) 10px,var(--green-d) 20px);
+    border-radius:999px; transition:width .5s cubic-bezier(.2,.8,.2,1);}
+  .statline{display:flex; justify-content:space-between; margin-top:10px; font-size:12px; color:var(--ink-soft); font-weight:700;}
+  .statline b{color:var(--ink); font-size:14px;}
+
+  /* ===== Map ===== */
+  .maphead{display:flex; align-items:center; gap:8px; margin:22px 4px 4px;}
+  .maphead h2{font-size:16px; margin:0; font-weight:900;}
+  .maphead .hint{font-size:11.5px; color:var(--ink-soft); margin-left:auto; font-weight:700;}
+
+  .zone{position:relative; margin:0 0 4px; padding-left:44px;}
+  /* connector line down the left */
+  .zone::before{content:""; position:absolute; left:19px; top:0; bottom:-4px; width:4px;
+    background:repeating-linear-gradient(var(--line2) 0 8px, transparent 8px 16px);}
+  .zone:last-child::before{display:none;}
+  .node{position:absolute; left:6px; top:14px; width:30px; height:30px; border-radius:50%;
+    background:var(--paper2); border:3px solid var(--line2); z-index:2;
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:var(--ink-soft);}
+  .zone.done .node{background:var(--gold); border-color:#b9801f; color:#fff;}
+  .zone.active .node{background:var(--green); border-color:var(--green-d); color:#fff; animation:pulse 1.6s infinite;}
+  .zone.locked .node{background:#e7ddca; border-color:#cdbd9d; color:#b6a686;}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,143,91,.5);}50%{box-shadow:0 0 0 8px rgba(74,143,91,0);}}
+
+  .card{
+    background:#fffdf7; border:2px solid var(--line); border-radius:18px;
+    padding:14px 14px; box-shadow:var(--shadow); overflow:hidden;
+  }
+  .zone.locked .card{filter:grayscale(.4) opacity(.72);}
+  .zone.done .card{border-color:var(--gold-l); background:linear-gradient(180deg,#fffdf5,#fbf3dd);}
+  .chead{display:flex; align-items:center; gap:10px; cursor:pointer;}
+  .zicon{font-size:26px; width:34px; text-align:center;}
+  .zmeta{flex:1; min-width:0;}
+  .ztitle{font-size:16.5px; font-weight:900; letter-spacing:-.3px; display:flex; align-items:center; gap:6px;}
+  .zsub{font-size:12px; color:var(--ink-soft); font-weight:700; margin-top:2px;}
+  .zprog{font-size:11.5px; font-weight:800; color:var(--green-d); background:var(--green-l);
+    padding:3px 9px; border-radius:999px; border:1.5px solid #cfe3c8; white-space:nowrap;}
+  .zone.locked .zprog{color:#9a8c72; background:#eee3cd; border-color:#d8c9a9;}
+  .caret{font-size:12px; color:var(--ink-soft); transition:transform .25s; margin-left:2px;}
+  .zone.open .caret{transform:rotate(90deg);}
+  .lockmsg{font-size:11.5px; color:#9a8c72; font-weight:700; margin-top:6px; padding-left:44px;}
+
+  .stamps{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+  .zone.open .stamps{max-height:1200px;}
+  .stamps-inner{padding:12px 2px 2px;}
+
+  .stamp{
+    display:flex; align-items:flex-start; gap:11px; padding:10px 8px; border-radius:12px;
+    cursor:pointer; transition:background .15s; border:1.5px dashed transparent;
+  }
+  .stamp:active{background:#f4ecda;}
+  .stamp + .stamp{border-top:1px solid #f0e6d0;}
+  .chk{flex:0 0 26px; width:26px; height:26px; border-radius:8px; margin-top:1px;
+    border:2.5px solid var(--line2); background:#fff; position:relative; transition:.15s;}
+  .stamp.cleared .chk{background:var(--green); border-color:var(--green-d);}
+  .stamp.cleared .chk::after{content:"✓"; color:#fff; font-weight:900; font-size:16px;
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;}
+  .stamp.cleared .chk .kstamp{
+    content:""; position:absolute; inset:-9px -6px auto auto; font-size:20px;
+  }
+  .sbody{flex:1; min-width:0;}
+  .sname{font-size:14.5px; font-weight:800; letter-spacing:-.2px;}
+  .stamp.cleared .sname{color:var(--ink-soft); text-decoration:line-through; text-decoration-color:#c9b489;}
+  .stip{font-size:12px; color:var(--ink-soft); margin-top:3px; line-height:1.45; font-weight:600;}
+  .tag30{display:inline-block; font-size:10px; font-weight:900; color:#fff; background:var(--rose);
+    padding:1px 7px; border-radius:999px; margin-left:6px; vertical-align:middle; letter-spacing:.3px;}
+  .tagboss{display:inline-block; font-size:10px; font-weight:900; color:#fff; background:var(--gold);
+    padding:1px 7px; border-radius:999px; margin-left:6px; vertical-align:middle;}
+  .boss .sname{color:var(--gold);}
+  .boss.cleared .sname{color:var(--gold);}
+
+  /* clear banner inside done zone */
+  .clearline{margin-top:8px; text-align:center; font-size:12.5px; font-weight:800; color:var(--gold);
+    background:var(--gold-l); border:1.5px dashed #d9b45a; border-radius:10px; padding:7px;}
+
+  /* ===== CTA card ===== */
+  .cta{
+    margin:20px 0 8px; background:linear-gradient(180deg,#eef6ea,#dcecd6);
+    border:2px solid #bcd9b3; border-radius:18px; padding:16px; text-align:center;
+  }
+  .cta h3{margin:0 0 6px; font-size:15px; font-weight:900; color:var(--green-d);}
+  .cta p{margin:0 0 12px; font-size:12.5px; color:#4c6449; font-weight:600; line-height:1.5;}
+  .hashtags{font-size:11.5px; color:var(--green-d); font-weight:800; margin-top:8px; word-break:keep-all;}
+  .btn{
+    appearance:none; border:none; font-family:inherit; cursor:pointer; font-weight:900;
+    border-radius:12px; padding:12px 16px; font-size:13.5px; transition:transform .08s;
+  }
+  .btn:active{transform:translateY(2px);}
+  .btn-share{background:var(--green); color:#fff; box-shadow:0 4px 0 var(--green-d); width:100%;}
+  .btn-ig{display:inline-block; margin-top:10px; text-decoration:none; color:var(--green-d);
+    font-weight:900; font-size:13px; border-bottom:2px solid #bcd9b3; padding-bottom:2px;}
+
+  footer{text-align:center; padding:18px 0 6px; font-size:11px; color:#a3927a; font-weight:700;}
+  footer .sl{color:var(--green-d); font-weight:900; font-size:12.5px; display:block; margin-bottom:6px;}
+
+  /* ===== bottom toolbar ===== */
+  .toolbar{
+    position:fixed; left:0; right:0; bottom:0; z-index:40;
+    background:rgba(246,239,226,.94); backdrop-filter:blur(8px);
+    border-top:2px solid var(--line2); padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  }
+  .toolbar .inner{max-width:520px; margin:0 auto; display:flex; gap:8px;}
+  .tbtn{flex:1; background:#fffdf7; border:2px solid var(--line2); border-radius:12px; padding:9px 4px;
+    font-weight:900; font-size:12px; color:var(--ink); cursor:pointer; font-family:inherit; text-align:center;}
+  .tbtn:active{background:#f0e6d0;}
+  .tbtn .ic{font-size:16px; display:block; margin-bottom:2px;}
+  .tbtn.primary{background:var(--gold); color:#fff; border-color:#b9801f;}
+
+  /* ===== timer modal ===== */
+  .modal{position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center; padding:20px;
+    background:rgba(40,32,22,.55);}
+  .modal.on{display:flex;}
+  .msheet{background:var(--paper); border:2px solid var(--line2); border-radius:22px; padding:24px 20px;
+    width:100%; max-width:340px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,.3);}
+  .msheet h3{margin:0 0 4px; font-size:17px; font-weight:900;}
+  .msheet .sub{font-size:12px; color:var(--ink-soft); font-weight:700; margin-bottom:16px;}
+  .clock{font-size:56px; font-weight:900; letter-spacing:1px; font-variant-numeric:tabular-nums; color:var(--green-d); margin:6px 0 4px;}
+  .clock.warn{color:var(--rose);}
+  .tstate{font-size:12px; color:var(--ink-soft); font-weight:800; margin-bottom:16px; min-height:16px;}
+  .trow{display:flex; gap:8px;}
+  .trow .btn{flex:1;}
+  .btn-go{background:var(--green); color:#fff; box-shadow:0 4px 0 var(--green-d);}
+  .btn-rs{background:#e7ddca; color:var(--ink); box-shadow:0 4px 0 #c9b489;}
+  .btn-cl{background:transparent; color:var(--ink-soft); margin-top:12px; width:100%; font-size:12.5px;}
+
+  .toast{position:fixed; left:50%; bottom:96px; transform:translateX(-50%) translateY(20px);
+    background:var(--ink); color:#fff; font-size:13px; font-weight:800; padding:11px 18px; border-radius:999px;
+    opacity:0; transition:.3s; z-index:80; pointer-events:none; max-width:90%; text-align:center;}
+  .toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* celebration */
+  .confetti{position:fixed; inset:0; pointer-events:none; z-index:70; overflow:hidden; display:none;}
+  .confetti.on{display:block;}
+  .confetti i{position:absolute; top:-20px; width:9px; height:14px; border-radius:2px; animation:fall linear forwards;}
+  @keyframes fall{to{transform:translateY(110vh) rotate(600deg);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="badge">🎯 도장 깨는 엄마 · 살림소생</span>
+    <h1>우리집 <span class="em">도장깨기</span> 지도</h1>
+    <p class="slogan">모르면 새고, 알면 살아납니다.</p>
+  </header>
+
+  <!-- rank panel -->
+  <div class="panel">
+    <div class="rankrow">
+      <div class="rankmedal" id="medal">🌱</div>
+      <div class="rankmeta">
+        <div class="rankttl">지금 나의 칭호</div>
+        <div class="rankname" id="rankName">살림 초보 엄마</div>
+      </div>
+      <div class="rankpct" id="rankPct">0%</div>
+    </div>
+    <div class="bar"><i id="barFill"></i></div>
+    <div class="statline">
+      <span>깬 구간 <b id="clearedCount">0</b> / <span id="totalCount">0</span></span>
+      <span>남은 구간 <b id="leftCount">0</b>개</span>
+    </div>
+  </div>
+
+  <div class="maphead">
+    <h2>🗺️ 우리집 정복 루트</h2>
+    <span class="hint">한 구간씩 눌러서 도장 쾅</span>
+  </div>
+
+  <div id="map"></div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h3>혼자 말고, 같이 깨요 💪</h3>
+    <p>오늘 깬 구간 캡처해서 올려주세요.<br>매주 베스트 챌린저를 소개해요.</p>
+    <button class="btn btn-share" id="shareBtn">📸 내 진행률 자랑하기 (문구 복사)</button>
+    <div class="hashtags">#도장깨는엄마 #한구간도장깨기 #살림소생<br>#모르면새고알면살아납니다 #주부지도</div>
+    <a class="btn-ig" href="https://instagram.com/jubu_map" target="_blank" rel="noopener">@jubu_map 팔로우하고 다음 구간 함께 깨기 →</a>
+  </div>
+
+  <footer>
+    <span class="sl">"고통받지 마세요. 한 구간씩이면 깰 수 있어요."</span>
+    엄마가 덜 지쳐야 — 아이를 더 따뜻하게 안아줄 수 있어요.
+  </footer>
+</div>
+
+<!-- bottom toolbar -->
+<div class="toolbar">
+  <div class="inner">
+    <button class="tbtn primary" id="timerBtn"><span class="ic">⏱️</span>30분 타이머</button>
+    <button class="tbtn" id="freeBtn"><span class="ic">🔓</span><span id="freeLabel">자유 모드</span></button>
+    <button class="tbtn" id="resetBtn"><span class="ic">↺</span>처음부터</button>
+  </div>
+</div>
+
+<!-- timer modal -->
+<div class="modal" id="timerModal">
+  <div class="msheet">
+    <h3>⏱️ 30분 도장깨기 타이머</h3>
+    <div class="sub">딱 한 구간만. 완벽하지 않아도 OK.</div>
+    <div class="clock" id="clock">30:00</div>
+    <div class="tstate" id="tstate">준비되면 시작을 눌러요</div>
+    <div class="trow">
+      <button class="btn btn-go" id="tGo">시작</button>
+      <button class="btn btn-rs" id="tReset">리셋</button>
+    </div>
+    <button class="btn btn-cl" id="tClose">닫기</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+/* ============ MAP DATA (공간 기준 · 집 지도) ============ */
+const MAP = [
+  { id:"entrance", icon:"🚪", title:"현관 관문", sub:"집의 첫 인상 · 매일 드나드는 1평",
+    stamps:[
+      {n:"신발장 묵은 냄새 깨기", t:"신문지+베이킹소다 컵 하나 넣어두기. 향으로 덮지 말고 원인을 먹여요."},
+      {n:"현관 먼지 동선 정리", t:"우산·택배칼·열쇠 '나가는 손' 동선으로 한 자리 몰기. 등원 5초 줄여요."},
+      {n:"신발장 뒤 보이지 않는 곳", t:"신발장 밑 틈 — 밀대에 물티슈 끼워 쓱. 여기서 냄새가 올라와요."},
+      {n:"현관 1평 완전 정복", boss:true, t:"바닥 물걸레 한 번 + 센서등 먼지. 문 열 때 기분이 달라져요."}
+    ]},
+  { id:"bath", icon:"🛁", title:"욕실 던전", sub:"곰팡이·물때 소굴 · 아이가 매일 쓰는 곳",
+    stamps:[
+      {n:"세면대 수채구멍 깨기", t:"칫솔+베이킹소다로 까무까무한 곳 문지르기. 여기가 냄새의 진짜 범인."},
+      {n:"수도꼭지 빨간 물때", t:"구연산 물 적신 휴지로 10분 덮어두기. 문지르지 말고 녹여요."},
+      {n:"거울 물때 깨기", t:"신문지에 식초 살짝—뽀득. 유리세정제보다 자국이 안 남아요."},
+      {n:"누런 줄눈 살리기", t:"줄눈 전용 대신 치약+칫솔 먼저 시도. 안 되면 그때 사요."},
+      {n:"변기·세면대 누런 자국", t:"자기 전 구연산 뿌려두고 아침에 슥. 밤새 약이 일해요."},
+      {n:"화장실 천장 곰팡이 (최종보스)", boss:true, t:"밀대에 곰팡이젤 묻혀 천장에 발라두기. 올려다보지 말고 밀대로."}
+    ]},
+  { id:"kitchen", icon:"🍳", title:"주방 스테이지", sub:"하루에 제일 많이 여는 공간 (냉장고 24번)",
+    stamps:[
+      {n:"매일 여는 냉장고 손잡이", t:"손때 묻는 곳부터. 하루 24번 만지는 곳이 제일 더러워요."},
+      {n:"냉장고 뒤 보이지 않는 곳", t:"뒷면 방열판 먼지 = 전기세. 청소기 솔로 쭉—냉방비 새던 자리."},
+      {n:"후드 기름때 깨기", t:"미지근한 물+주방세제 불려서 닦기. 굳기 전에 하면 5분."},
+      {n:"싱크대 하부장 묵은 냄새", t:"안 쓰는 컵에 커피가루/숯 하나. 습기랑 냄새를 같이 먹어요."},
+      {n:"싱크대 배수구 깨기", t:"과탄산 한 스푼+뜨거운 물. 거품이 미끌미끌을 벗겨내요."},
+      {n:"1평 주방 동선 정복", boss:true, t:"제일 자주 쓰는 3개만 손 닿는 곳으로. 요리 동선이 살아나요."}
+    ]},
+  { id:"veranda", icon:"🌿", title:"베란다 구역", sub:"미뤄두면 곰팡이 밭 되는 곳",
+    stamps:[
+      {n:"빨래줄·창틀 곰팡이", t:"창틀 홈은 마른 칫솔 먼저→물티슈. 젖은 채 두면 또 펴요."},
+      {n:"베란다 배수구 깨기", t:"머리카락·먼지 건져내고 과탄산. 역류 냄새의 출발점이에요."},
+      {n:"구석 먼지구름 정리", t:"돌돌이 말고 물걸레 밀대 한 번. 먼지구름은 뭉쳐서 커져요."},
+      {n:"베란다 회복 완료", boss:true, t:"바닥 한 번 밀고 환기 10분. 세탁·화분 자리가 살아나요."}
+    ]},
+  { id:"laundry", icon:"🧺", title:"세탁·다용도실", sub:"버릴 뻔한 걸 살리는 구원 구역",
+    stamps:[
+      {n:"세탁기 뒤·고무패킹", t:"패킹 주름 사이 곰팡이 = 옷 냄새 원인. 마른 수건으로 벌려 닦기."},
+      {n:"누런 옷 살리기", t:"과탄산+40도 물에 30분 담그기. 표백제보다 옷이 안 상해요."},
+      {n:"굳어버린 세제 살리기", t:"따뜻한 물 조금 부어 저어주기. 버리지 말고 되살려요."},
+      {n:"세탁실 정복", boss:true, t:"세제·건조볼·빨래망 한 바구니로. 손 뻗는 횟수가 줄어요."}
+    ]},
+  { id:"living", icon:"🛋️", title:"거실 스테이지", sub:"가족이 제일 오래 숨 쉬는 공간",
+    stamps:[
+      {n:"에어컨 필터·송풍구", t:"필터 물세척+송풍구 물티슈. 아이가 마시는 공기가 달라져요."},
+      {n:"소파·매트리스 밑", t:"밀대 하나 쑥 넣기. 안 보여도 먼지가 제일 많이 쌓인 곳."},
+      {n:"리모컨·손잡이 손때", t:"매일 만지는 것부터. 보이는 청소보다 위생 효과가 커요."},
+      {n:"5년 된 에어컨 새 거 만들기", boss:true, t:"필터+송풍구+겉면까지. 버리기 전에 살려봐요."}
+    ]},
+  { id:"room", icon:"🛏️", title:"안방·아이방 (라스트)", sub:"하루의 시작과 끝 · 마지막 관문",
+    stamps:[
+      {n:"옷장 안쪽 곰팡이·냄새", t:"제습제 하나+문 살짝 열어 환기. 옷에 냄새 배기 전에."},
+      {n:"창틀·창문 레일", t:"마른 솔→물티슈 순서. 결로 물때가 곰팡이로 크기 전에."},
+      {n:"아이방 5분 회복 시스템", t:"바구니 3개(장난감/책/옷)로 나누기. 5분 안에 되돌아와요."},
+      {n:"우리집 완전 소생 🏆", boss:true, t:"마지막 한 구간. 여기까지 온 나에게 — 오늘은 좀 쉬어요."}
+    ]}
+];
+
+const RANKS = [
+  {min:0,   name:"살림 초보 엄마",      medal:"🌱"},
+  {min:1,   name:"도장깨기 수련생",     medal:"🧹"},
+  {min:25,  name:"한 구간 정복자",      medal:"⚔️"},
+  {min:50,  name:"살림소생 견습가",     medal:"🛠️"},
+  {min:75,  name:"도장 깨는 엄마",      medal:"🔥"},
+  {min:100, name:"살림소생 마스터",     medal:"🏆"}
+];
+
+const STORE_KEY = "jubumap_progress_v1";
+let state = load();
+
+function load(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {cleared:{}, free:false}; }
+  catch(e){ return {cleared:{}, free:false}; }
+}
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+function keyOf(zi,si){ return zi+"-"+si; }
+function isCleared(zi,si){ return !!state.cleared[keyOf(zi,si)]; }
+function zoneCleared(zi){ return MAP[zi].stamps.every((_,si)=>isCleared(zi,si)); }
+function zoneCount(zi){ let c=0; MAP[zi].stamps.forEach((_,si)=>{ if(isCleared(zi,si)) c++; }); return c; }
+function totalStamps(){ return MAP.reduce((a,z)=>a+z.stamps.length,0); }
+function totalCleared(){ let c=0; MAP.forEach((z,zi)=>z.stamps.forEach((_,si)=>{ if(isCleared(zi,si)) c++; })); return c; }
+function zoneUnlocked(zi){
+  if(state.free) return true;
+  if(zi===0) return true;
+  return zoneCleared(zi-1);
+}
+
+/* ============ RENDER ============ */
+const mapEl = document.getElementById('map');
+function render(){
+  mapEl.innerHTML = "";
+  MAP.forEach((z,zi)=>{
+    const done = zoneCleared(zi);
+    const unlocked = zoneUnlocked(zi);
+    const active = unlocked && !done;
+    const zc = zoneCount(zi), zt = z.stamps.length;
+
+    const zone = document.createElement('div');
+    zone.className = "zone" + (done?" done":"") + (active?" active":"") + (!unlocked?" locked":"");
+    if(state.open===zi && unlocked) zone.classList.add("open");
+
+    const stampsHTML = z.stamps.map((s,si)=>{
+      const cl = isCleared(zi,si);
+      return `<div class="stamp ${cl?'cleared':''} ${s.boss?'boss':''}" data-zi="${zi}" data-si="${si}">
+        <div class="chk"></div>
+        <div class="sbody">
+          <div class="sname">${s.n}${s.boss?'<span class="tagboss">보스</span>':''}</div>
+          <div class="stip">${s.t}</div>
+        </div>
+      </div>`;
+    }).join("");
+
+    zone.innerHTML = `
+      <div class="node">${done?'★':(zi+1)}</div>
+      <div class="card">
+        <div class="chead" data-zone="${zi}">
+          <div class="zicon">${z.icon}</div>
+          <div class="zmeta">
+            <div class="ztitle">${z.title} ${unlocked?'':'🔒'}</div>
+            <div class="zsub">${z.sub}</div>
+          </div>
+          <div class="zprog">${zc}/${zt}</div>
+          <div class="caret">▶</div>
+        </div>
+        ${!unlocked?`<div class="lockmsg">앞 구간을 먼저 깨면 열려요 (또는 자유 모드 ON)</div>`:''}
+        <div class="stamps"><div class="stamps-inner">
+          ${stampsHTML}
+          ${done?'<div class="clearline">🎉 이 구간 클리어! 한 끗 차이로 살아났어요</div>':''}
+        </div></div>
+      </div>`;
+    mapEl.appendChild(zone);
+  });
+  bindMap();
+  updatePanel();
+}
+
+function updatePanel(){
+  const total = totalStamps(), cl = totalCleared();
+  const pct = Math.round(cl/total*100);
+  document.getElementById('barFill').style.width = pct+"%";
+  document.getElementById('rankPct').textContent = pct+"%";
+  document.getElementById('clearedCount').textContent = cl;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('leftCount').textContent = total-cl;
+  let r = RANKS[0];
+  for(const rk of RANKS){ if(pct>=rk.min) r=rk; }
+  document.getElementById('rankName').textContent = r.name;
+  document.getElementById('medal').textContent = r.medal;
+}
+
+function bindMap(){
+  document.querySelectorAll('.chead').forEach(h=>{
+    h.addEventListener('click', ()=>{
+      const zi = +h.dataset.zone;
+      if(!zoneUnlocked(zi)){ toast("앞 구간부터 깨거나 자유 모드를 켜요 🔓"); return; }
+      state.open = (state.open===zi)? -1 : zi;
+      render();
+    });
+  });
+  document.querySelectorAll('.stamp').forEach(st=>{
+    st.addEventListener('click', ()=>{
+      const zi=+st.dataset.zi, si=+st.dataset.si;
+      const k=keyOf(zi,si);
+      const wasZoneDone = zoneCleared(zi);
+      if(state.cleared[k]) delete state.cleared[k];
+      else { state.cleared[k]=true; stampPop(st); }
+      state.open = zi;
+      save();
+      const nowZoneDone = zoneCleared(zi);
+      render();
+      if(!wasZoneDone && nowZoneDone){
+        celebrate();
+        if(totalCleared()===totalStamps()) toast("🏆 우리집 완전 소생! 살림소생 마스터 달성!");
+        else toast("🎉 "+MAP[zi].title+" 클리어! 다음 구간이 열렸어요");
+      }
+    });
+  });
+}
+
+function stampPop(el){
+  const chk = el.querySelector('.chk');
+  const p = document.createElement('span');
+  p.textContent="쾅"; p.style.cssText="position:absolute;font-size:22px;font-weight:900;color:#d99a2b;pointer-events:none;animation:none;";
+  chk.style.position="relative"; chk.appendChild(p);
+  p.animate([{transform:"scale(.4) rotate(-15deg)",opacity:1},{transform:"scale(1.6) rotate(10deg)",opacity:0}],{duration:500,easing:"ease-out"});
+  setTimeout(()=>p.remove(),480);
+}
+
+/* ============ toast ============ */
+let toT;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  clearTimeout(toT); toT=setTimeout(()=>t.classList.remove('on'),2400);
+}
+
+/* ============ confetti ============ */
+function celebrate(){
+  const c=document.getElementById('confetti');
+  c.classList.add('on'); c.innerHTML="";
+  const colors=["#4a8f5b","#d99a2b","#c96b5b","#6b9bc9","#e7b24d"];
+  for(let i=0;i<70;i++){
+    const s=document.createElement('i');
+    s.style.left=Math.random()*100+"%";
+    s.style.background=colors[i%colors.length];
+    s.style.animationDuration=(1.8+Math.random()*1.4)+"s";
+    s.style.animationDelay=(Math.random()*.5)+"s";
+    s.style.transform="rotate("+Math.random()*360+"deg)";
+    c.appendChild(s);
+  }
+  setTimeout(()=>{c.classList.remove('on');c.innerHTML="";},3200);
+}
+
+/* ============ toolbar actions ============ */
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(confirm("진행 상황을 처음부터 다시 시작할까요?")){
+    state={cleared:{},free:state.free,open:-1}; save(); render(); toast("새로 시작! 첫 구간부터 깨러 가요");
+  }
+});
+const freeBtn=document.getElementById('freeBtn'), freeLabel=document.getElementById('freeLabel');
+function syncFree(){ freeLabel.textContent = state.free? "순서 모드":"자유 모드"; freeBtn.classList.toggle('primary',false); }
+freeBtn.addEventListener('click', ()=>{
+  state.free=!state.free; save(); syncFree(); render();
+  toast(state.free? "🔓 자유 모드 — 아무 구간이나 열려요" : "🔒 순서 모드 — 한 구간씩 정복해요");
+});
+
+/* ============ share ============ */
+document.getElementById('shareBtn').addEventListener('click', ()=>{
+  const total=totalStamps(), cl=totalCleared(), pct=Math.round(cl/total*100);
+  let r=RANKS[0]; for(const rk of RANKS){ if(pct>=rk.min) r=rk; }
+  const txt =
+`우리집 살림 도장깨기 ${pct}% 클리어! ${r.medal}
+지금 나는 [${r.name}]
+깬 구간 ${cl} / ${total}
+
+한 구간씩이면 나도 할 수 있어요 💪
+#도장깨는엄마 #한구간도장깨기 #살림소생 #주부지도
+@jubu_map`;
+  if(navigator.share){
+    navigator.share({text:txt}).catch(()=>copyText(txt));
+  } else copyText(txt);
+});
+function copyText(txt){
+  navigator.clipboard.writeText(txt).then(()=>toast("문구 복사 완료! 인스타에 붙여넣기 하세요 📸"))
+  .catch(()=>{ prompt("아래 문구를 복사하세요:", txt); });
+}
+
+/* ============ 30min timer ============ */
+const modal=document.getElementById('timerModal'), clock=document.getElementById('clock'), tstate=document.getElementById('tstate');
+let remain=30*60, tick=null, running=false;
+function fmt(s){ const m=String(Math.floor(s/60)).padStart(2,'0'), ss=String(s%60).padStart(2,'0'); return m+":"+ss; }
+function drawClock(){ clock.textContent=fmt(remain); clock.classList.toggle('warn', remain<=60); }
+document.getElementById('timerBtn').addEventListener('click', ()=>{ modal.classList.add('on'); });
+document.getElementById('tClose').addEventListener('click', ()=>{ modal.classList.remove('on'); });
+modal.addEventListener('click', e=>{ if(e.target===modal) modal.classList.remove('on'); });
+const tGo=document.getElementById('tGo');
+tGo.addEventListener('click', ()=>{
+  if(running){ running=false; clearInterval(tick); tGo.textContent="계속"; tstate.textContent="잠깐 멈췄어요"; return; }
+  running=true; tGo.textContent="일시정지"; tstate.textContent="지금 한 구간만 — 완벽하지 않아도 OK 💪";
+  tick=setInterval(()=>{
+    remain--; drawClock();
+    if(remain<=0){ clearInterval(tick); running=false; tGo.textContent="시작"; tstate.textContent="⏰ 30분 클리어! 오늘 한 구간 깼어요"; toast("⏰ 30분 완료! 도장 쾅 찍으러 가요"); celebrate(); remain=30*60; setTimeout(drawClock,3000); }
+  },1000);
+});
+document.getElementById('tReset').addEventListener('click', ()=>{
+  clearInterval(tick); running=false; remain=30*60; drawClock(); tGo.textContent="시작"; tstate.textContent="준비되면 시작을 눌러요";
+});
+
+/* ============ init ============ */
+if(state.open===undefined) state.open=0;
+syncFree(); drawClock(); render();
+</script>
+</body>
+</html>

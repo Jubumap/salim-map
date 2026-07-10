@@ -54,7 +54,6 @@
   .maphead h2{font-size:16px; margin:0; font-weight:900;}
   .maphead .hint{font-size:11.5px; color:var(--ink-soft); margin-left:auto; font-weight:700;}
 
-  /* ===== 평면도 (한눈에 보기) ===== */
   .house{background:#f6f8ef; border:2.5px solid var(--line2); border-radius:18px; padding:8px; box-shadow:var(--shadow);}
   .plan{display:grid; grid-template-columns:repeat(4,1fr); gap:6px;}
   .room{cursor:pointer; border:2px solid var(--line); border-radius:12px; padding:8px 9px; min-height:72px;
@@ -69,14 +68,25 @@
   .rfr{font-size:10.5px; font-weight:800; color:var(--green-d); background:#fff; border:1px solid var(--line2); border-radius:999px; padding:1px 7px;}
   .room.done .rfr{color:#9a7d2b; border-color:#d6bd6f; background:var(--gold-l);}
   .star{font-size:14px;}
-  .plemsg{text-align:center; font-size:11px; color:var(--ink-soft); font-weight:700; margin:10px 0 0;}
+  .plemsg{text-align:center; font-size:11px; color:var(--ink-soft); font-weight:700; margin:10px 0 0; line-height:1.5;}
+  .plemsg b{color:var(--green-d);}
+  .todo{margin-top:12px; background:linear-gradient(180deg,#f7f1dd,#eee2c1); border:2px solid #dcc88d; border-radius:14px;
+    padding:12px 13px; display:flex; align-items:center; gap:10px; cursor:pointer; box-shadow:var(--shadow);}
+  .todo .ti{font-size:22px;}
+  .todo .tb{flex:1; min-width:0;}
+  .todo .tl{font-size:11px; font-weight:800; color:#9a7d2b;}
+  .todo .tx{font-size:13.5px; font-weight:900; letter-spacing:-.2px; margin-top:1px;}
+  .todo .go{font-size:11.5px; font-weight:900; color:#fff; background:var(--green); border-radius:999px; padding:6px 12px; white-space:nowrap;}
+  .reel-link{display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:800; color:#fff;
+    background:var(--rose); padding:4px 10px; border-radius:999px; text-decoration:none; margin-top:7px; margin-right:6px;}
 
-  /* ===== 방 상세 ===== */
   .detail{margin-top:12px; background:#fbfcf6; border:2px solid var(--line); border-radius:16px; padding:12px 13px; box-shadow:var(--shadow);}
   .dh{display:flex; align-items:center; gap:8px; margin-bottom:2px;}
   .dh .di{font-size:23px;}
   .dh .dn{font-size:16.5px; font-weight:900;}
   .dh .dc{margin-left:auto; font-size:11.5px; font-weight:800; color:var(--green-d); background:var(--green-l); border:1.5px solid #cdddbf; border-radius:999px; padding:3px 9px;}
+  .dnote{font-size:11.5px; color:var(--green-d); font-weight:800; line-height:1.5; background:var(--green-l);
+    border:1.5px solid #cdddbf; border-radius:10px; padding:8px 10px; margin:8px 0 2px;}
   .stamp{display:flex; align-items:flex-start; gap:11px; padding:11px 4px; cursor:pointer; border-top:1px solid #e7ecda;}
   .stamp:first-of-type{border-top:none;}
   .stamp:active{background:#e8eede;}
@@ -86,11 +96,10 @@
   .sbody{flex:1; min-width:0;}
   .sname{font-size:14.5px; font-weight:800; letter-spacing:-.2px; line-height:1.4;}
   .stamp.cleared .sname{color:var(--ink-soft); text-decoration:line-through; text-decoration-color:#b3c1a1;}
-  .stip{font-size:11.5px; color:var(--ink-soft); margin-top:3px; line-height:1.45; font-weight:600;}
+  .stip{font-size:11.5px; color:var(--ink-soft); margin-top:3px; line-height:1.5; font-weight:600;}
   .clearline{margin-top:8px; text-align:center; font-size:12.5px; font-weight:800; color:#9a7d2b;
     background:var(--gold-l); border:1.5px dashed #d6bd6f; border-radius:10px; padding:7px;}
 
-  /* ===== 치트시트 ===== */
   .tipcard{display:flex; align-items:center; gap:12px; background:linear-gradient(180deg,#f7f1dd,#eee2c1);
     border:2px solid #dcc88d; border-radius:16px; padding:13px 14px; margin:6px 0 0; box-shadow:var(--shadow);}
   .tipico{font-size:24px;}
@@ -100,7 +109,6 @@
   .reel{display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:800; color:#fff;
     background:var(--rose); padding:4px 10px; border-radius:999px; text-decoration:none; white-space:nowrap;}
 
-  /* ===== 살림 리듬표 ===== */
   .rcard{background:#fbfcf6; border:2px solid var(--line); border-radius:18px; padding:12px 12px 8px; box-shadow:var(--shadow);}
   .rnote{font-size:12px; color:var(--ink-soft); font-weight:700; line-height:1.55; background:var(--green-l);
     border:1.5px solid #cdddbf; border-radius:12px; padding:9px 11px; margin:0 2px 6px;}
@@ -169,9 +177,9 @@
 <div class="wrap">
 
   <header>
-    <span class="badge">🏠 한 공간씩, 우리집 살림 소생</span>
+    <span class="badge">🏠 한 공간씩 우리집 살림을 소생시켜요</span>
     <h1>우리집 <span class="em">도장깨기</span> 지도</h1>
-    <p class="slogan">조금만 알면 되는데, 모르고 지나가면 아깝잖아요.<br>도장 깨듯 한 공간씩 정돈하며 — 새는 돈·시간·공간을 되살려요.</p>
+    <p class="slogan">마치 도장을 깨듯 한 공간씩 정돈하며,<br>우리집에서 새는 돈·시간·공간을 되살려요</p>
   </header>
 
   <div class="panel">
@@ -197,8 +205,10 @@
 
   <div class="house">
     <div class="plan" id="plan"></div>
-    <div class="plemsg">방을 톡 누르면 아래에 할 일이 열려요 · 채울수록 방이 초록으로 차올라요</div>
+    <div class="plemsg">완벽 말고 <b>80%만</b> 해도 충분해요 · 방을 톡 누르면 할 일이 열리고, 채울수록 초록으로 차올라요</div>
   </div>
+
+  <div class="todo" id="todo"></div>
 
   <div class="detail" id="detail"></div>
 
@@ -220,7 +230,6 @@
   <div class="cta">
     <h3>같이 도장 깨요 💪</h3>
     <p>하루 30분, 한 주에 한 구역.<br>도장 깨듯 우리집을 같이 정리해볼까요?</p>
-    <button class="btn btn-share" id="shareBtn">📸 내 진행률 자랑하기 (문구 복사)</button>
     <div class="hashtags">#살림도장깨기 #살림살리기</div>
     <a class="btn-ig" href="https://instagram.com/jubu_map" target="_blank" rel="noopener">@jubu_map 팔로우하고 다음 구역 함께 깨기 →</a>
   </div>
@@ -262,51 +271,59 @@
 <script>
 const MAP = [
   { icon:"🚪", title:"현관", span:1, stamps:[
-      {n:"바닥 쓸기"},
-      {n:"오래되거나 안 신는 신발 정리"},
-      {n:"동선 따라 자리 정해주기", t:"장바구니·택배칼·가위·바깥놀이용품·우산 → 손 닿는 곳에 고정"}
+      {n:"바닥 쓸기", t:"빗자루로 먼지 쓸고 — 비·눈 오는 날엔 안 쓰는 박스를 현관 앞에 두면 바닥 더러워지는 걸 예방해요"},
+      {n:"오래되거나 안 신는 신발 정리", t:"1년 안 신은 신발은 과감히 — 신발장 숨통이 트여요"},
+      {n:"외출 동선에 따라 자리 정해주기", t:"장바구니·바깥놀이 장난감·우산·택배용 칼·가위를 수납하면 동선이 편해져요"}
     ]},
   { icon:"🍳", title:"주방", span:2, stamps:[
-      {n:"냉장고 정리"},
-      {n:"배수구 청소", t:"봉수트랩 뒤집어 과탄산소다+퐁퐁+뜨거운물 붓고, 10분 뒤 헹구면 끝!"},
-      {n:"식재료 재고 파악", t:"냉털 도전! 있는 걸로 먼저 비우기"},
-      {n:"상판 닦기"},
-      {n:"싱크대 닦기"},
-      {n:"인덕션·가스레인지 닦기"},
-      {n:"아일랜드 식탁 위 정리"},
-      {n:"건조대 위 식기 정리"},
-      {n:"냄새나는 컵 살리기", t:"물에 식초 넣고 헹구면 묵은 냄새가 잡혀요"},
-      {n:"식기세척기 청소"},
-      {n:"안 쓰는 그릇·이 나간 그릇·탄 팬 비우기", t:"코팅 벗겨진 후라이팬은 미련 없이 — 자리도 마음도 가벼워져요"}
+      {n:"냉장고 정리", t:"유통기한 고려해 선입선출! 주 1회 재고 파악하고 포스트잇으로 표기하면 보기 편해요"},
+      {n:"야채·과일 보관", t:"김치냉장고 야채·과일칸에 두면 더 신선하게 오래 먹어요"},
+      {n:"싱크대 배수구 청소", t:"과탄산소다+퐁퐁+뜨거운물 붓고 10분 뒀다 헹구면 깨끗해져요"},
+      {n:"상판 닦기", t:"알코올 스프레이·손소독제·다목적 클리너로. 단, 매직블럭은 사용 금지!"},
+      {n:"아일랜드 식탁 위 정리", t:"'쓰고 바로 제자리'면 늘 비어 있어요"},
+      {n:"인덕션·가스레인지 청소", t:"인덕션은 손소독제·알코올 클리너. 오래된 탄 자국은 인덕션 크리너+스크래퍼면 잘 지워져요"},
+      {n:"전자레인지 청소", t:"물 담은 그릇에 레몬(또는 식초) 넣고 3분 돌린 뒤, 김 오르면 닦기 — 눌은 것도 쉽게 닦여요"},
+      {n:"냄새나는 컵 살리기", t:"물에 식초 넣고 헹구면 냄새가 사라져요"},
+      {n:"이 나간·안 쓰는 그릇, 탄 팬 비우기", t:"코팅 벗겨진 후라이팬은 미련 없이 — 자리도 마음도 가벼워져요"},
+      {n:"식기세척기 청소", t:"월 1회 거름망 청소 + 구연산·식초물 넣고 통살균 돌리기"},
+      {n:"식기건조대 청소", t:"물때는 구연산으로 닦아주기"},
+      {n:"주방 후드 청소", t:"뜨거운물에 탄산소다 풀어 담갔다 빼면 기름때가 녹고, 마지막에 구연산으로 중화하면 좋아요"}
     ]},
   { icon:"🥫", title:"팬트리", span:1, stamps:[
-      {n:"생필품 재고 파악 후 채워넣기", t:"보관할 수 있는 만큼만 1세트씩! 쟁여두지 않아도 충분해요"}
+      {n:"안 쓰는 물건·유통기한 지난 것 비우기", t:"수납박스부터 사지 말고, 갖고 있는 물건 양부터 확인! 종이박스·쇼핑백·틴케이스로 수납함 대체 가능해요. 남는 박스도 때론 짐이 될 수 있어요"}
     ]},
-  { icon:"🚽", title:"화장실", span:1, stamps:[
-      {n:"변기 닦기"},
-      {n:"세면대 청소"},
-      {n:"거울 닦기", t:"물청소 금지! 손소독제나 에탄올 묻히면 잘 닦여요"},
-      {n:"바닥 머리카락 치우기"},
-      {n:"배수구 청소", t:"봉수트랩 뒤집어 과탄산소다+퐁퐁+뜨거운물 붓고, 10분 뒤 헹구면 끝!"},
-      {n:"바닥 청소"}
+  { icon:"🚽", title:"화장실", span:1, note:"청소 순서는 위→아래! 거울 → 벽 → 샤워부스 → 변기 → 세면대 → 배수구 → 바닥", stamps:[
+      {n:"거울 닦기", t:"물청소 금지(녹 생겨요)! 손소독제·에탄올·전용세제로 닦기"},
+      {n:"벽·샤워부스 닦기", t:"전용세제 대신 과탄산소다+퐁퐁+뜨거운물, 안 쓰는 치약도 OK. 평소 스퀴지로 물기 밀고 환기하면 곰팡이가 덜 생겨요"},
+      {n:"변기 닦기", t:"안 쓰는 칫솔을 라이터로 구부려 안쪽 틈새 닦기. 락스 소주잔 반 잔 넣고 닦으면 요석 제거!"},
+      {n:"세면대 청소", t:"물 튄 자국은 마른 수건으로 한 번 더 — 물때가 안 생겨요"},
+      {n:"배수구 청소", t:"머리카락 치우고 과탄산소다+퐁퐁+뜨거운물이면 소독까지 돼요"},
+      {n:"바닥 청소", t:"마른 상태에서 머리카락부터 치우면 솔 청소가 훨씬 쉬워요"},
+      {n:"곰팡이 잡기", t:"생겼다면 초기에! 키친타올에 락스 적셔 올리거나 곰팡이젤 — 오래된 건 2~3일 둬야 잘 지워져요. 락스 냄새는 클래리티 염소케어로 바로 잡기"},
+      {n:"청소솔 소독", t:"락스물에 담가두면 머리카락도 녹고 살균소독까지 돼요"}
     ]},
-  { icon:"🛋️", title:"거실", span:2, stamps:[
-      {n:"먼지 닦아주기"}
+  { icon:"🧺", title:"세탁실", span:1, note:"세탁기는 늘 쓴 뒤 고무패킹 물기 닦기 + 세제함 빼서 세탁조에 뒤집어 말리기. 세제는 적게 써야 잔여물이 안 남아요", stamps:[
+      {n:"세탁기 통세척 (순서대로)", t:"①잔수 빼고 거름망·고무패킹 물기 닦기 → ②세제함 빼서 세척 → ③무세제 통세척(월 1회) → ④세탁조 클리너 통세척(3~4달 1회)"},
+      {n:"건조기 필터 세척", t:"필터 먼지는 쓸 때마다 물세척으로 제거해요"},
+      {n:"건조기 통살균", t:"통살균 월 1회"},
+      {n:"건조기 콘덴서 케어", t:"콘덴서 케어 2주 1회"}
     ]},
-  { icon:"🧺", title:"세탁실", span:1, stamps:[
-      {n:"세탁기 잔수 빼고 물기 닦기"},
-      {n:"건조기 필터 먼지 닦기"}
+  { icon:"🌿", title:"베란다", span:2, stamps:[
+      {n:"창틀 먼지 + 방충망 청소", t:"대야에 따뜻한물+퐁퐁, 스펀지나 수면양말에 적셔 부드럽게. 창틀 홈은 붓으로 닦으면 힘 안 들어요"},
+      {n:"사용하지 않는 물건 비우기", t:"베란다가 창고 안 되게 — 안 쓰는 것부터 먼저"}
     ]},
-  { icon:"👕", title:"옷장", span:2, stamps:[
-      {n:"사이즈 작거나 안 입는 옷 비우기"},
-      {n:"손이 잘 안 가는 옷 비우기"},
-      {n:"외출복 다림질하기"},
-      {n:"늘어난 양말 비우기"}
+  { icon:"🛋️", title:"거실", span:1, stamps:[
+      {n:"먼지 닦기 (위→아래)", t:"높은 곳에서 낮은 곳 순서로 — 먼지가 아래로 떨어져요"},
+      {n:"바닥 청소", t:"아침·저녁 부직포로 밀기. 가운데 먼저, 가장자리를 마지막에 쓸면 먼지가 안 도망가요"}
+    ]},
+  { icon:"👕", title:"옷장", span:1, note:"꿀팁 — 반팔·맨투맨을 실내복 겸 받쳐입기용으로 쓰면 옷 개수를 줄일 수 있어요", stamps:[
+      {n:"사이즈 작거나 안 입는 옷 비우기", t:"1년 안 입었으면 굿바이 — 옷장이 숨 쉬어요"},
+      {n:"외출복 다림질하기", t:"입고 나갈 것만 미리 — 아침이 편해져요"},
+      {n:"늘어난 양말 비우기", t:"고무줄 늘어난 건 미련 없이 — 서랍이 정리돼요"}
     ]},
   { icon:"🧸", title:"아이방", span:2, stamps:[
-      {n:"시기 지난 놀잇감 정리"},
-      {n:"계절 지난 아이 옷 정리"},
-      {n:"작품 정리 (주 1회)"}
+      {n:"시기 지난 놀잇감 정리", t:"안 갖고 노는 건 박스에 → 한 달 뒤에도 안 찾으면 정리"},
+      {n:"기관에서 만들어 온 작품 정리", t:"사진으로 남기고 실물은 추리기 — 추억은 남고 공간은 살아요"}
     ]}
 ];
 
@@ -322,11 +339,24 @@ const RANKS = [
 const ROUTINE = [
   { g:"데일리", tag:"매일 가볍게", c:"#7d9b71", items:["아침·저녁 바닥 밀대로 정리","오전에 식기 정리하기"]},
   { g:"요일별", tag:"큰 틀만 · 못 해도 OK", c:"#6f97a3", items:["월 · 현관 청소, 이불 먼지 털기","화 · 인덕션·후드·전자레인지·에어프라이어","수 · 배수구 청소, 화장실 청소","목 · 한 구역 집중 청소","금 · 먼지 닦기, 바닥 닦기, 식재료 재고 체크","주말 · 장보기"]},
-  { g:"1일 · 말일", tag:"매달 딱 두 번", c:"#c2a24e", items:["수세미 교체","칫솔 교체","세탁기 통세척","건조기 통살균"]},
+  { g:"1일 · 말일", tag:"매달 딱 두 번", c:"#c2a24e", items:["수세미 교체","칫솔 교체","세탁기 통세척","건조기 통살균","식기세척기 통살균"]},
   { g:"2주에 한 번", tag:"주기만 기억", c:"#bd7a5b", items:["에어컨 필터 청소","건조기 콘덴서 닦기","주방 후드 닦기"]}
 ];
 
-const STORE_KEY = "jubumap_progress_v4";
+/* ===== 항목별 릴스 링크 =====
+   "항목 이름": "릴스 주소" 형태로 넣으면 그 항목에 ▶ 릴스 보기 버튼이 자동으로 생겨요.
+   주소는 인스타 릴스·게시물 URL (예: https://www.instagram.com/reel/XXXXXXX/)
+   항목 이름은 지도의 이름과 정확히 같아야 해요. */
+const REELS = {
+  "베란다|창틀 먼지 + 방충망 청소": "https://www.instagram.com/p/DW7oTaozj9D/",
+  "세탁실|세탁기 통세척 (순서대로)": ["https://www.instagram.com/reel/DZtQjTbp4qJ/","https://www.instagram.com/reel/DOVzM7mk76s/"],
+  "주방|전자레인지 청소": ["https://www.instagram.com/p/DQEtQ8DE9T1/","https://www.instagram.com/p/DQUAbVXkwm6/"],
+  "주방|인덕션·가스레인지 청소": "https://www.instagram.com/reel/DPNr_Nik72I/",
+  "주방|주방 후드 청소": "https://www.instagram.com/p/DO7m7yxExjg/?img_index=1",
+  "거실|바닥 청소": "https://www.instagram.com/p/DZbg4tVTxlw/",
+};
+
+const STORE_KEY = "jubumap_progress_v8";
 let state = load();
 function load(){
   try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {cleared:{}, routine:{}, sel:0}; }
@@ -367,12 +397,13 @@ function plan(){
 function detail(){
   const zi=state.sel, z=MAP[zi], c=cnt(zi), l=len(zi), done=c===l;
   const rows=z.stamps.map((s,si)=>`<div class="stamp ${isCl(zi,si)?'cleared':''}" data-s="${si}">
-    <div class="chk"></div><div class="sbody"><div class="sname">${s.n}</div>${s.t?`<div class="stip">${s.t}</div>`:''}</div></div>`).join("");
-  detailEl.innerHTML=`<div class="dh"><span class="di">${z.icon}</span><span class="dn">${z.title}</span><span class="dc">${c}/${l}</span></div>${rows}${done?'<div class="clearline">🎉 이 방 클리어! 한 끗 차이로 살아났어요</div>':''}`;
-  detailEl.querySelectorAll('.stamp').forEach(el=>el.addEventListener('click',()=>{
+    <div class="chk"></div><div class="sbody"><div class="sname">${s.n}</div>${s.t?`<div class="stip">${s.t}</div>`:''}${reelBtns(z.title,s.n)}</div></div>`).join("");
+  detailEl.innerHTML=`<div class="dh"><span class="di">${z.icon}</span><span class="dn">${z.title}</span><span class="dc">${c}/${l}</span></div>${z.note?`<div class="dnote">📋 ${z.note}</div>`:''}${rows}${done?'<div class="clearline">🎉 이 방 클리어! 한 끗 차이로 살아났어요</div>':''}`;
+  detailEl.querySelectorAll('.stamp').forEach(el=>el.addEventListener('click',(e)=>{
+    if(e.target.closest('.reel-link')) return;
     const si=+el.dataset.s, k=K(zi,si), was=dn(zi);
     if(state.cleared[k])delete state.cleared[k]; else{state.cleared[k]=1; pop(el);}
-    save(); plan(); detail(); panel();
+    save(); plan(); detail(); panel(); recommend();
     if(!was&&dn(zi)){ conf(); toast(totCl()===total()?"🏆 우리집 완전 소생! 살림소생 마스터 달성!":("🎉 "+z.title+" 방 클리어! 방이 꽉 찼어요")); }
   }));
 }
@@ -382,6 +413,22 @@ function pop(el){
   chk.style.position="relative"; chk.appendChild(p);
   p.animate([{transform:"scale(.4) rotate(-15deg)",opacity:1},{transform:"scale(1.6) rotate(10deg)",opacity:0}],{duration:500,easing:"ease-out"});
   setTimeout(()=>p.remove(),480);
+}
+function recommend(){
+  const el=document.getElementById('todo');
+  let zi=-1; for(let i=0;i<MAP.length;i++){ if(!dn(i)){ zi=i; break; } }
+  if(zi<0){ el.style.cursor="default"; el.onclick=null;
+    el.innerHTML=`<div class="ti">🏆</div><div class="tb"><div class="tl">오늘의 추천</div><div class="tx">다 깼어요! 오늘은 좀 쉬어요</div></div>`; return; }
+  const z=MAP[zi]; let item=""; for(let s=0;s<z.stamps.length;s++){ if(!isCl(zi,s)){ item=z.stamps[s].n; break; } }
+  el.style.cursor="pointer";
+  el.innerHTML=`<div class="ti">🎯</div><div class="tb"><div class="tl">오늘 여기부터 — 딱 한 칸이면 돼요</div><div class="tx">${z.icon} ${z.title} · ${item}</div></div><div class="go">바로가기</div>`;
+  el.onclick=()=>{ state.sel=zi; save(); plan(); detail(); recommend(); detailEl.scrollIntoView({behavior:'smooth',block:'start'}); };
+}
+function reelBtns(zone,name){
+  let v = REELS[zone+"|"+name] ?? REELS[name];
+  if(!v) return "";
+  const arr = Array.isArray(v)? v : [v];
+  return arr.map((u,i)=>`<a class="reel-link" href="${u}" target="_blank" rel="noopener">▶ 릴스${arr.length>1?" "+(i+1):" 보기"}</a>`).join("");
 }
 
 const rEl=document.getElementById('routine');
@@ -409,22 +456,10 @@ function conf(){
 
 document.getElementById('resetBtn').addEventListener('click',()=>{
   if(confirm("지도 체크를 처음부터 다시 시작할까요? (살림 리듬표는 유지돼요)")){
-    state={cleared:{}, routine:state.routine, sel:0}; save(); plan(); detail(); panel(); toast("새로 시작! 한 방씩 다시 깨봐요");
+    state={cleared:{}, routine:state.routine, sel:0}; save(); plan(); detail(); panel(); recommend(); toast("새로 시작! 한 방씩 다시 깨봐요");
   }
 });
 
-document.getElementById('shareBtn').addEventListener('click',()=>{
-  const t=total(), c=totCl(), p=Math.round(c/t*100); let r=RANKS[0]; RANKS.forEach(k=>{if(p>=k.min)r=k;});
-  const txt=`우리집 살림 도장깨기 ${p}% 클리어! ${r.medal}
-지금 나는 [${r.name}]
-깬 항목 ${c} / ${t}
-
-한 방씩이면 나도 할 수 있어요 💪
-#살림도장깨기 #살림살리기
-@jubu_map`;
-  if(navigator.share){ navigator.share({text:txt}).catch(()=>cp(txt)); } else cp(txt);
-});
-function cp(txt){ navigator.clipboard.writeText(txt).then(()=>toast("문구 복사 완료! 인스타에 붙여넣기 하세요 📸")).catch(()=>prompt("아래 문구를 복사하세요:",txt)); }
 
 const modal=document.getElementById('timerModal'), clock=document.getElementById('clock'), tstate=document.getElementById('tstate');
 let tmode="timer", remain=30*60, elapsed=0, tick=null, running=false;
@@ -450,7 +485,7 @@ tGo.addEventListener('click',()=>{
 tReset.addEventListener('click',()=>{ stopTick(); remain=30*60; elapsed=0; drawClock(); tGo.textContent="시작"; tstate.textContent=tmode==="timer"?"준비되면 시작을 눌러요":"0부터 재요. 준비되면 시작"; });
 
 if(state.sel===undefined) state.sel=0;
-drawClock(); plan(); detail(); panel(); renderR();
+drawClock(); plan(); detail(); panel(); recommend(); renderR();
 </script>
 </body>
 </html>

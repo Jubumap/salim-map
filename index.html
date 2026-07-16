@@ -234,7 +234,7 @@
 
   <div class="cta">
     <h3>같이 도장 깨요 💪</h3>
-    <p>하루 30분, 한 주에 한 구역.<br>도장 깨듯 우리집을 같이 정리해볼까요?</p>
+    <p>하루 30분, 1주일에 1구역!<br>마치 도장을 깨듯 한 공간씩 정돈하며,<br>우리집에서 새는 돈·시간·공간도 되살려봐요!</p>
     <div class="hashtags">#살림도장깨기 #살림살리기</div>
     <a class="btn-ig" href="https://instagram.com/jubu_map" target="_blank" rel="noopener">@jubu_map 팔로우하고 다음 구역 함께 깨기 →</a>
   </div>
@@ -324,15 +324,15 @@ const MAP = [
     ]},
   { icon:"🌿", title:"베란다", span:2, stamps:[
       {n:"창틀 먼지 + 방충망 청소", t:"대야에 따뜻한물+퐁퐁, 스펀지나 수면양말에 적셔 부드럽게. 창틀 홈은 붓으로 닦으면 힘 안 들어요"},
-      {n:"사용하지 않는 물건 비우기", t:"베란다가 창고 안 되게 — 안 쓰는 것부터 먼저"}
+      {n:"사용하지 않는 물건 비우기", t:"베란다는 물건 둥지가 되기 쉬워요 — 1년 이상 쓰지 않는 물건은 비우기"}
     ]},
   { icon:"🛋️", title:"거실", span:1, stamps:[
       {n:"먼지 닦기 (위→아래)", t:"높은 곳에서 낮은 곳 순서로 — 먼지가 아래로 떨어져요"},
       {n:"바닥 청소", t:"아침·저녁 부직포로 밀기. 가운데 먼저, 가장자리를 마지막에 쓸면 먼지가 안 도망가요"}
     ]},
   { icon:"🧸", title:"아이방", span:2, stamps:[
-      {n:"시기 지난 놀잇감 정리", t:"안 갖고 노는 건 박스에 → 한 달 뒤에도 안 찾으면 정리"},
-      {n:"기관에서 만들어 온 작품 정리", t:"사진으로 남기고 실물은 추리기 — 추억은 남고 공간은 살아요"}
+      {n:"시기 지난 놀잇감 정리", t:"안 가지고 노는 건 당근마켓·비움! 애매한 건 1달 정도 보관 후 정리. 거실장이 있다면 서랍을 장난감 보관함으로 써도 좋아요"},
+      {n:"기관에서 만들어 온 작품 정리", t:"정말 보관하고 싶은 건 전시 zone을 만들고, 그 구역이 꽉 차거나 1주일 지나면 비워요"}
     ]}
 ];
 
@@ -348,7 +348,7 @@ const ROUTINE = [
   { g:"데일리", tag:"매일 가볍게", c:"#7d9b71", items:[
       {n:"오전에 식기 정리"},
       {n:"바닥 쓸기"},
-      {n:"빨래 돌리기", t:"젖은 수건 빨래는 미니 건조대에 말려뒀다 빨래통에 넣으면 세균 번식을 막아요"},
+      {n:"빨래 돌리기", t:"젖은 수건은 미리 미니건조대에 말렸다가 빨래통에 넣으면 세균번식 막을 수 있어요"},
       {n:"빨래 개서 넣기"}
     ]},
   { g:"요일별", tag:"큰 틀만 · 못 해도 OK", c:"#6f97a3", items:[
@@ -458,7 +458,7 @@ function renderR(){
       return `<div class="rrow ${on?'done':''}" data-k="${k}"><div class="rbody"><div class="rname">${it.n}</div>${it.t?`<div class="rtip">${it.t}</div>`:''}</div><div class="rchk"></div></div>`;}).join("");
     return `<div class="rgroup"><div class="rghead" style="border-color:${g.c}"><span class="rgbadge" style="background:${g.c}">${g.g}</span><span class="rgtag">${g.tag}</span></div>${rows}</div>`;
   }).join("");
-  rEl.innerHTML=`<div class="rcard"><div class="rnote">🔖 <b>주기만 알아도</b> 살림이 편해져요 — 세탁기 통세척·에어컨 필터, 언제 하는지 여기 다 있어요. 완벽 말고 큰 틀만!</div>${blocks}<div class="rfoot"><span>체크 ${d}/${t} ${d===t&&t>0?'🎉':''}</span><button class="rreset" id="rReset">체크 지우기</button></div></div>`;
+  rEl.innerHTML=`<div class="rcard"><div class="rnote">🔖 완벽하지 않아도 <b>주기적으로, 큰 틀을 나눠서</b> 해주기만 해도 훨씬 편해져요</div>${blocks}<div class="rfoot"><span>체크 ${d}/${t} ${d===t&&t>0?'🎉':''}</span><button class="rreset" id="rReset">체크 지우기</button></div></div>`;
   rEl.querySelectorAll('.rrow').forEach(row=>row.addEventListener('click',()=>{const k=row.dataset.k; if(state.routine[k])delete state.routine[k]; else state.routine[k]=1; save(); renderR();}));
   document.getElementById('rReset').addEventListener('click',()=>{state.routine={}; save(); renderR(); toast("체크를 지웠어요. 부담 없이 다시 시작해요");});
 }

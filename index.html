@@ -210,7 +210,7 @@
 
   <div class="house">
     <div class="plan" id="plan"></div>
-    <div class="plemsg">완벽 말고 <b>80%만</b> 해도 충분해요 · 방을 톡 누르면 할 일이 열리고, 채울수록 초록으로 차올라요</div>
+    <div class="plemsg">완벽하지 않아도 <b>80%만</b> 해도 충분해요 · 방을 톡 누르면 할 일이 열리고, 채울수록 초록으로 차올라요</div>
   </div>
 
   <div class="todo" id="todo"></div>
@@ -233,10 +233,10 @@
   </div>
 
   <div class="cta">
-    <h3>같이 도장 깨요 💪</h3>
-    <p>하루 30분, 1주일에 1구역!<br>마치 도장을 깨듯 한 공간씩 정돈하며,<br>우리집에서 새는 돈·시간·공간도 되살려봐요!</p>
+    <h3>같이 정리해요 💪</h3>
+    <p>하루 30분, 1주일에 1구역!<br>마치 도장깨기 하듯 한 공간씩 정돈하며,<br>우리집에서 새는 돈·시간·공간도 되살려봐요.</p>
     <div class="hashtags">#살림도장깨기 #살림살리기</div>
-    <a class="btn-ig" href="https://instagram.com/jubu_map" target="_blank" rel="noopener">@jubu_map 팔로우하고 다음 구역 함께 깨기 →</a>
+    <a class="btn-ig" href="https://instagram.com/jubu_map" target="_blank" rel="noopener">@jubu_map 팔로우하고 함께 애정이 가는 집 만들어봐요! →</a>
   </div>
 
   <footer>
@@ -458,7 +458,7 @@ function renderR(){
       return `<div class="rrow ${on?'done':''}" data-k="${k}"><div class="rbody"><div class="rname">${it.n}</div>${it.t?`<div class="rtip">${it.t}</div>`:''}</div><div class="rchk"></div></div>`;}).join("");
     return `<div class="rgroup"><div class="rghead" style="border-color:${g.c}"><span class="rgbadge" style="background:${g.c}">${g.g}</span><span class="rgtag">${g.tag}</span></div>${rows}</div>`;
   }).join("");
-  rEl.innerHTML=`<div class="rcard"><div class="rnote">🔖 완벽하지 않아도 <b>주기적으로, 큰 틀을 나눠서</b> 해주기만 해도 훨씬 편해져요</div>${blocks}<div class="rfoot"><span>체크 ${d}/${t} ${d===t&&t>0?'🎉':''}</span><button class="rreset" id="rReset">체크 지우기</button></div></div>`;
+  rEl.innerHTML=`<div class="rcard"><div class="rnote">🔖 완벽하지 않아도 <b>큰 틀 안에서</b> 해도 충분해요 — 세탁기 통세척·에어컨 필터, 주기만 알아도 편해져요</div>${blocks}<div class="rfoot"><span>체크 ${d}/${t} ${d===t&&t>0?'🎉':''}</span><button class="rreset" id="rReset">체크 지우기</button></div></div>`;
   rEl.querySelectorAll('.rrow').forEach(row=>row.addEventListener('click',()=>{const k=row.dataset.k; if(state.routine[k])delete state.routine[k]; else state.routine[k]=1; save(); renderR();}));
   document.getElementById('rReset').addEventListener('click',()=>{state.routine={}; save(); renderR(); toast("체크를 지웠어요. 부담 없이 다시 시작해요");});
 }

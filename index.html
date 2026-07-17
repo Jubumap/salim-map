@@ -516,12 +516,73 @@ function chalRender(){
   }
 }
 
-/* ===== 하단 공유 ===== */
+/* ===== 하단 공유 (인증 이미지 생성) ===== */
+const FONT="'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif";
+function rrect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function buildShareImage(){
+  const W=1080, H=1500, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const ctx=cv.getContext('2d');
+  // 배경
+  ctx.fillStyle="#f5f3ea"; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle="#fbeee5"; ctx.beginPath(); ctx.arc(W/2,-40,520,0,Math.PI*2); ctx.fill();
+  const cx=W/2;
+  // 배지
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  rrect(ctx,cx-235,64,470,54,27); ctx.fillStyle="#eaf0e2"; ctx.fill();
+  ctx.fillStyle="#5f7a51"; ctx.font="700 26px "+FONT; ctx.fillText("우리집 살림 도장깨기 챌린지",cx,92);
+  // 타이틀
+  ctx.fillStyle="#3d4335"; ctx.font="800 52px "+FONT; ctx.fillText("우리집 살림 도장깨기 지도",cx,175);
+  // 칭호
+  const t=total(), c=totCl(), p=t>0?Math.round(c/t*100):0;
+  let rk=RANKS[0]; for(const r of RANKS){ if(p>=r.min) rk=r; }
+  ctx.font="80px "+FONT; ctx.fillText(rk.medal,cx,285);
+  ctx.fillStyle="#5f7a51"; ctx.font="800 42px "+FONT; ctx.fillText(rk.name,cx,360);
+  // 진행률
+  ctx.fillStyle="#8aa77d"; ctx.font="800 76px "+FONT; ctx.fillText(p+"%",cx,455);
+  const bx=160, bw=760, by=510, bh=32;
+  rrect(ctx,bx,by,bw,bh,16); ctx.fillStyle="#e3ded0"; ctx.fill();
+  rrect(ctx,bx,by,Math.max(bh,bw*p/100),bh,16); ctx.fillStyle="#8aa77d"; ctx.fill();
+  ctx.fillStyle="#7c826d"; ctx.font="600 28px "+FONT; ctx.fillText(c+" / "+t+" 칸 완료",cx,585);
+  // 지도(공간별)
+  const gx=64, gy=650, cw=(W-64*2-28)/2, ch=150, gap=26;
+  MAP.forEach((z,i)=>{
+    const col=i%2, row=Math.floor(i/2), x=gx+col*(cw+28), y=gy+row*(ch+gap);
+    const zc=cnt(i), zl=len(i), pct=zl>0?zc/zl:0, done=zl>0&&zc===zl;
+    rrect(ctx,x,y,cw,ch,20); ctx.fillStyle="#ffffff"; ctx.fill();
+    ctx.save(); rrect(ctx,x,y,cw,ch,20); ctx.clip();
+    ctx.fillStyle=done?"#f4e8c6":"#eaf0e2"; ctx.fillRect(x,y+ch-ch*pct,cw,ch*pct); ctx.restore();
+    rrect(ctx,x,y,cw,ch,20); ctx.lineWidth=done?4:2; ctx.strokeStyle=done?"#d3ad55":"#e6e0d0"; ctx.stroke();
+    ctx.textAlign="left"; ctx.font="46px "+FONT; ctx.fillText(z.icon,x+28,y+62);
+    ctx.fillStyle="#3d4335"; ctx.font="800 32px "+FONT; ctx.fillText(z.title,x+92,y+56);
+    ctx.fillStyle="#7c826d"; ctx.font="600 26px "+FONT; ctx.fillText(zc+" / "+zl+" 칸",x+92,y+100);
+    if(done){ ctx.textAlign="right"; ctx.font="34px "+FONT; ctx.fillText("⭐",x+cw-22,y+40); }
+    ctx.textAlign="center";
+  });
+  // 푸터
+  const d=new Date(), ds=d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0");
+  ctx.fillStyle="#7c826d"; ctx.font="600 28px "+FONT; ctx.fillText(ds+"  ·  @jubu_map",cx,1400);
+  ctx.fillStyle="#b17a5c"; ctx.font="700 30px "+FONT; ctx.fillText("#우리집살림도장깨기챌린지",cx,1448);
+  return cv;
+}
 document.getElementById('shareBtn').addEventListener('click',()=>{
-  const txt="우리집 살림 도장깨기 지도로 한 구역씩 정리 시작했어요! 같이 해요 🏠 #우리집살림도장깨기챌린지 @jubu_map";
-  const url=location.href;
-  if(navigator.share){ navigator.share({title:"우리집 살림 도장깨기 지도", text:txt, url:url}).catch(()=>{}); }
-  else { navigator.clipboard.writeText(txt+" "+url).then(()=>toast("공유 문구를 복사했어요! 인스타에 붙여넣기 하세요 📷")).catch(()=>prompt("아래를 복사하세요:", txt+" "+url)); }
+  const txt="우리집 살림 도장깨기 지도로 한 구역씩 정리 중이에요! 같이 해요 🏠 #우리집살림도장깨기챌린지 @jubu_map";
+  let file=null;
+  try{
+    const cv=buildShareImage();
+    const durl=cv.toDataURL("image/png");
+    const bin=atob(durl.split(",")[1]); const arr=new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+    file=new File([arr],"salim-map.png",{type:"image/png"});
+  }catch(e){ file=null; }
+  if(file && navigator.canShare && navigator.canShare({files:[file]})){
+    navigator.share({files:[file], title:"우리집 살림 도장깨기", text:txt}).catch(()=>{});
+  } else if(file){
+    const a=document.createElement("a"); a.href=URL.createObjectURL(file); a.download="우리집-살림도장깨기.png"; a.click();
+    toast("인증 이미지를 저장했어요! 인스타 스토리·피드에 올려보세요 📷");
+  } else {
+    if(navigator.share){ navigator.share({title:"우리집 살림 도장깨기 지도", text:txt, url:location.href}).catch(()=>{}); }
+    else { navigator.clipboard.writeText(txt+" "+location.href).then(()=>toast("공유 문구를 복사했어요 📷")).catch(()=>{}); }
+  }
 });
 
 const rEl=document.getElementById('routine');

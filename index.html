@@ -226,12 +226,11 @@
 
   <div class="maphead">
     <h2>🗺️ 우리집 한 눈에 보기</h2>
-    <span class="hint">방 눌러서 도장 쾅</span>
   </div>
 
   <div class="house">
     <div class="plan" id="plan"></div>
-    <div class="plemsg">완벽하지 않아도 <b>80%만</b> 해도 충분해요 · 공간을 누르면 할 일 리스트가 열려요</div>
+    <div class="plemsg">완벽하지 않아도 <b>80%만</b> 해도 충분해요<br>공간을 누르면 할 일 리스트가 열리는데, 항목 추가도 가능해요</div>
   </div>
 
   <div class="todo" id="todo"></div>
@@ -261,8 +260,8 @@
   </div>
 
   <div class="share">
-    <h3>🌱 혼자보다 같이가 덜 미뤄져요</h3>
-    <p>이 지도로 시작했다면, 친구도 데려와요.<br>함께라면 지치지 않고 끝까지 갈 수 있어요.</p>
+    <h3>🌱 같이 살림 도장 깨요</h3>
+    <p>혼자보단 함께하면 지치지 않고 끝까지 갈 수 있어요 :)</p>
     <button class="share-btn" id="shareBtn">📷 우리집 살림 도장깨기 인증하기</button>
     <div class="share-tag">#우리집살림도장깨기챌린지</div>
   </div>
@@ -315,16 +314,16 @@ const MAP = [
       {n:"외출 동선에 따라 자리 정해주기", t:"장바구니·바깥놀이 장난감·우산·택배용 칼·가위를 수납하면 동선이 편해져요"}
     ]},
   { icon:"🍳", title:"주방", span:2, stamps:[
-      {n:"냉장고 정리", t:"유통기한 고려해 선입선출! 주 1회 재고 파악하고 포스트잇으로 표기하면 보기 편해요"},
-      {n:"야채·과일 보관", t:"김치냉장고 야채·과일칸에 두면 더 신선하게 오래 먹어요"},
+      {n:"냉장고 청소하기", t:"유통기한 지난 소스, 오래된 음식 버리기! 포스트잇으로 식자재 표기하면 보기 편해요"},
+      {n:"냉장고 속 식자재(과일·야채·고기·생선) 체크하기", t:"냉장고 야채칸보다 김치냉장고 야채칸에 보관하면 더 신선하게 오래 먹을 수 있어요"},
       {n:"싱크대 배수구 청소", t:"과탄산소다+퐁퐁+뜨거운물 붓고 10분 뒀다 헹구면 깨끗해져요"},
-      {n:"상판 닦기", t:"알코올 스프레이·손소독제·다목적 클리너로. 단, 매직블럭은 사용 금지!"},
+      {n:"상판 닦기", t:"다목적 크리너 외에 레몬수, 알코올이나 손소독제로도 잘 닦여요. 단, 매직블럭은 사용 금지예요"},
       {n:"아일랜드 식탁 위 정리", t:"'쓰고 바로 제자리'면 늘 비어 있어요"},
       {n:"인덕션·가스레인지 청소", t:"인덕션은 손소독제·알코올 클리너. 오래된 탄 자국은 인덕션 크리너+스크래퍼면 잘 지워져요"},
       {n:"전자레인지 청소", t:"물 담은 그릇에 레몬(또는 식초) 넣고 3분 돌린 뒤, 김 오르면 닦기 — 눌은 것도 쉽게 닦여요"},
       {n:"냄새나는 컵 살리기", t:"물에 식초 넣고 헹구면 냄새가 사라져요"},
       {n:"식기세척기 청소", t:"월 1회 거름망 청소 + 구연산·식초물 넣고 통살균 돌리기"},
-      {n:"식기건조대 청소", t:"물때는 구연산으로 닦아주기"},
+      {n:"식기건조대 청소", t:"물때는 구연산으로 닦아내고, 바세린으로 코팅해주면 좋아요"},
       {n:"주방 후드 청소", t:"뜨거운물에 탄산소다 풀어 담갔다 빼면 기름때가 녹고, 마지막에 구연산으로 중화하면 좋아요"}
     ]},
   { icon:"🥫", title:"팬트리", span:1, stamps:[
@@ -337,7 +336,7 @@ const MAP = [
       {n:"세면대 청소", t:"물 튄 자국은 마른 수건으로 한 번 더 — 물때가 안 생겨요"},
       {n:"배수구 청소", t:"머리카락 치우고 과탄산소다+퐁퐁+뜨거운물이면 소독까지 돼요"},
       {n:"바닥 청소", t:"마른 상태에서 머리카락부터 치우면 솔 청소가 훨씬 쉬워요"},
-      {n:"곰팡이 잡기", t:"생겼다면 초기에! 키친타올에 락스 적셔 올리거나 곰팡이젤 — 오래된 건 2~3일 둬야 잘 지워져요. 락스 냄새는 클래리티 염소케어로 바로 잡기"},
+      {n:"곰팡이 제거하기", t:"곰팡이는 평소 스퀴지로 물기 제거 잘 해주고, 환기만 잘 시켜줘도 예방할 수 있어요. 만약 생겼다면 초기에 제거해줘야 쉽고 빠르게 없애는데, 키친타올에 락스 적셔서 올리거나 곰팡이겔 추천드려요(오래된 곰팡이는 곰팡이겔을 2~3일 방치해야 해요). 만약 락스 냄새가 괴로우면 클래리티 염소케어를 뿌려주면 냄새가 중화되어 편하게 청소할 수 있어요"},
       {n:"청소솔 소독", t:"락스물에 담가두면 머리카락도 녹고 살균소독까지 돼요"}
     ]},
   { icon:"🧺", title:"세탁실", span:1, note:"세탁기는 늘 쓴 뒤 고무패킹 물기 닦기 + 세제함 빼서 세탁조에 뒤집어 말리기. 세제는 적게 써야 잔여물이 안 남아요", stamps:[
@@ -383,16 +382,17 @@ const ROUTINE = [
       {n:"금 · 먼지 닦기, 바닥 닦기, 식재료 재고 체크"},
       {n:"주말 · 장보기"}
     ]},
-  { g:"주간", tag:"주·격주로 (저장각!)", c:"#c9a24e", items:[
+  { g:"주간", tag:"주·격주로", c:"#c9a24e", items:[
       {n:"에어컨 필터 청소 (2주 1회)"},
       {n:"건조기 콘덴서 닦기 (2주 1회)"},
       {n:"주방 후드 닦기 (2주 1회)"}
     ]},
-  { g:"월간", tag:"매달 1일·말일 (저장각!)", c:"#b17a5c", items:[
+  { g:"월간", tag:"매달 1일·말일", c:"#b17a5c", items:[
       {n:"수세미·칫솔 교체"},
       {n:"세탁기 통세척"},
       {n:"건조기 통살균"},
-      {n:"식기세척기 통살균"}
+      {n:"식기세척기 통살균"},
+      {n:"이불 교체"}
     ]}
 ];
 
@@ -439,7 +439,7 @@ function plan(){
       <div class="rtop"><span class="ric">${z.icon}</span><span class="rnm">${z.title}</span></div>
       <div class="rbot"><span class="rfr">${c}/${l}</span>${done?'<span class="star">⭐</span>':''}</div></div>`;
   }).join("");
-  planEl.querySelectorAll('.room').forEach(el=>el.addEventListener('click',()=>{ state.sel=+el.dataset.z; save(); plan(); detail(); }));
+  planEl.querySelectorAll('.room').forEach(el=>el.addEventListener('click',()=>{ state.sel=+el.dataset.z; save(); plan(); detail(); recommend(); }));
 }
 function reelBtns(zone,name){
   let v = REELS[zone+"|"+name] ?? REELS[name];
@@ -491,13 +491,14 @@ function pop(el){
 }
 function recommend(){
   const el=document.getElementById('todo');
-  let zi=-1; for(let i=0;i<MAP.length;i++){ if(!dn(i)){ zi=i; break; } }
+  // 사용자가 고른 공간 우선, 그 공간이 끝났으면 남은 첫 공간
+  let zi = (state.sel!=null && !dn(state.sel)) ? state.sel : -1;
+  if(zi<0){ for(let i=0;i<MAP.length;i++){ if(!dn(i)){ zi=i; break; } } }
   if(zi<0){ el.style.cursor="default"; el.onclick=null;
     el.innerHTML=`<div class="ti">🏆</div><div class="tb"><div class="tl">오늘의 추천</div><div class="tx">다 깼어요! 오늘은 좀 쉬어요</div></div>`; return; }
-  const z=MAP[zi]; let item=""; for(let s=0;s<z.stamps.length;s++){ if(!isCl(zi,s)){ item=z.stamps[s].n; break; } }
-  if(!item){ const cu=customList(zi).find(it=>!isCustCl(it.id)); if(cu) item=cu.n; }
+  const z=MAP[zi];
   el.style.cursor="pointer";
-  el.innerHTML=`<div class="ti">🎯</div><div class="tb"><div class="tl">오늘 여기부터 — 딱 한 칸이면 돼요</div><div class="tx">${z.icon} ${z.title} · ${item}</div></div><div class="go">바로가기</div>`;
+  el.innerHTML=`<div class="ti">🎯</div><div class="tb"><div class="tl">오늘 여기부터 — 딱 한 칸이면 돼요</div><div class="tx">${z.icon} ${z.title}</div></div><div class="go">바로가기</div>`;
   el.onclick=()=>{ state.sel=zi; save(); plan(); detail(); recommend(); detailEl.scrollIntoView({behavior:'smooth',block:'start'}); };
 }
 
@@ -506,7 +507,7 @@ function chalRender(){
   const el=document.getElementById('chal');
   if(!state.joined){
     el.classList.remove('joined');
-    el.innerHTML=`<div class="chal-t">🔥 우리집 살림 도장깨기 챌린지</div><div class="chal-x">혼자 미루던 살림, 같이 하면 덜 미뤄져요. 오늘 한 칸부터 같이 깨요.</div><button class="chal-btn" id="joinBtn">나도 함께할래요 ✋</button>`;
+    el.innerHTML=`<div class="chal-t">🔥 우리집 살림 도장깨기 챌린지 참여하기</div><div class="chal-x">흐린 눈 하던 집안일, 같이 도장 깨듯이 한 칸 씩 같이 해요!</div><button class="chal-btn" id="joinBtn">나도 함께할래요 ✋</button>`;
     document.getElementById('joinBtn').addEventListener('click',()=>{ state.joined=Date.now(); save(); conf(); toast("환영해요! 오늘 한 칸부터 같이 깨요 💪"); chalRender(); });
   } else {
     const days=Math.floor((Date.now()-state.joined)/86400000)+1;
@@ -534,7 +535,7 @@ function renderR(){
     const crows=(state.rcustom[gi]||[]).map(it=>{const rk="ru-"+it.id,on=!!state.routine[rk]; t++; if(on)d++;
       return `<div class="rrow rcust ${on?'done':''}" data-rid="${it.id}"><div class="rbody"><div class="rname">${esc(it.n)}</div></div><button class="cdel" data-rdel="${it.id}" data-g="${gi}" aria-label="삭제">×</button><div class="rchk"></div></div>`;}).join("");
     return `<div class="rgroup"><div class="rghead"><span class="rgbadge" style="background:${g.c}">${g.g}</span><span class="rgtag">${g.tag}</span></div>${rows}${crows}
-      <div class="addrow"><input class="addin radd" data-g="${gi}" type="text" placeholder="${g.g}에 나만의 루틴 추가" maxlength="40"><button class="addbtn raddbtn" data-g="${gi}">추가</button></div></div>`;
+      <div class="addrow"><input class="addin radd" data-g="${gi}" type="text" placeholder="${g.g} 루틴에 나만의 루틴 추가" maxlength="40"><button class="addbtn raddbtn" data-g="${gi}">추가</button></div></div>`;
   }).join("");
   rEl.innerHTML=`<div class="rcard"><div class="rnote">🔖 완벽하지 않아도 <b>80%만 해도 충분해요!</b> :) 주기만 맞춰도 훨씬 편해져요</div>${blocks}<div class="rfoot"><span>체크 ${d}/${t} ${d===t&&t>0?'🎉':''}</span><button class="rreset" id="rReset">체크 지우기</button></div></div>`;
   rEl.querySelectorAll('.rrow[data-k]').forEach(row=>row.addEventListener('click',()=>{const k=row.dataset.k; if(state.routine[k])delete state.routine[k]; else state.routine[k]=1; save(); renderR();}));

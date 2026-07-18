@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>우리집 살림 도장깨기 지도 · 주부지도</title>
+<meta name="description" content="구역별·루틴별 살림 체크리스트와 살림 팁. 하루 30분, 한 공간씩 도장 깨듯 정리해요. @jubu_map">
+<meta name="theme-color" content="#8aa77d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="살림 도장깨기">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%238aa77d'/%3E%3Ctext x='50' y='68' font-size='54' text-anchor='middle'%3E%F0%9F%8F%A0%3C/text%3E%3C/svg%3E">
 <style>
   :root{
     --cream:#f5f3ea; --card:#ffffff; --ink:#3d4335; --ink-soft:#7c826d;
@@ -21,7 +28,67 @@
     background:radial-gradient(circle at 50% -8%, #fbeee5 0, transparent 42%), var(--cream);
     background-attachment:fixed; -webkit-font-smoothing:antialiased; padding-bottom:80px;
   }
-  .wrap{max-width:520px; margin:0 auto; padding:0 18px;}
+  .wrap{max-width:680px; margin:0 auto; padding:0 16px;}
+
+  /* 인스타 바로가기 상단바 */
+  .igbar{display:block; text-align:center; text-decoration:none; font-size:13.5px; font-weight:800; color:#fff;
+    padding:12px 14px; letter-spacing:.2px; background:linear-gradient(90deg,#8aa77d,#a8a072,#d3ad55);}
+  .igbar:active{opacity:.85;}
+  .igico{width:17px; height:17px; vertical-align:-3.5px; margin-right:7px;}
+
+  /* 섹션 이동 버튼 */
+  /* 저장 안내 */
+  .savecard{background:var(--sage-l); border:1px solid #d6e2cc; border-radius:14px; padding:0 15px; margin:14px 0 0; overflow:hidden;}
+  .savetop{display:flex; align-items:center; gap:8px; padding:13px 0; cursor:pointer; font-size:13.5px; font-weight:800; color:var(--sage-d);}
+  .savetop .car{margin-left:auto; font-size:12px; transition:transform .25s;}
+  .savecard.open .savetop .car{transform:rotate(90deg);}
+  .savebody{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+  .savecard.open .savebody{max-height:600px;}
+  .savebody .in{padding:2px 0 15px; font-size:12.5px; line-height:1.75; color:var(--ink); font-weight:600;}
+  .savebody .step{margin:0 0 10px;}
+  .savebody .step b{color:var(--sage-d);}
+  .savewarn{background:#fff; border:1px dashed var(--peach-line); border-radius:10px; padding:9px 11px;
+    color:var(--peach-ink); font-weight:700; margin-bottom:11px;}
+
+  /* 백업·복원 */
+  .bkta{width:100%; height:72px; margin-top:10px; border:1px solid var(--line2); border-radius:10px;
+    padding:9px 10px; font-family:inherit; font-size:11px; color:var(--ink-soft); resize:none; background:#fff;}
+  .bkbtns{display:flex; gap:8px; margin-top:9px;}
+  .bkbtn{flex:1; border:1px solid var(--sage); background:var(--sage); color:#fff; font-family:inherit;
+    font-weight:800; font-size:12.5px; padding:11px 6px; border-radius:10px; cursor:pointer;}
+  .bkbtn.sec{background:#fff; color:var(--sage-d);}
+  .bkbtn:active{opacity:.85;}
+
+  .navbtns{display:flex; gap:10px; margin:16px 0 0;}
+  .navbtn{flex:1; display:block; text-decoration:none; cursor:pointer; text-align:center; line-height:1.45;
+    background:var(--card); border:1.5px solid var(--line2); border-radius:14px; padding:12px 4px;
+    font-size:12.5px; font-weight:800; color:var(--ink); font-family:inherit; box-shadow:var(--sh);}
+  .navbtn:active{background:var(--sage-l); border-color:var(--sage);}
+
+  /* 인사말 */
+  .hello{background:var(--card); border:1px solid var(--peach-line); border-left:4px solid var(--peach);
+    border-radius:14px; padding:15px 17px; margin:16px 0 0; font-size:13.5px; line-height:1.75;
+    font-weight:600; color:var(--ink); text-align:left;}
+  .hello .hi{font-weight:800; color:var(--peach-ink); display:block; margin-bottom:11px;}
+  .hello p{margin:0 0 14px;}
+  .hello p:last-child{margin-bottom:0;}
+  .hello b{color:var(--sage-d);}
+
+  /* 오늘의 할 일 */
+  .maphead .cnt{margin-left:auto; font-size:12px; font-weight:800; color:var(--sage-d);
+    background:var(--sage-l); border:1px solid #d6e2cc; padding:4px 11px; border-radius:999px; white-space:nowrap;}
+  .todaycard{background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:4px 16px 10px; box-shadow:var(--sh);}
+  .tdrow{display:flex; align-items:center; gap:12px; padding:13px 2px; border-bottom:1px solid #f2efe4; cursor:pointer;}
+  .tdrow:last-of-type{border-bottom:none;}
+  .tdrow .tchk{flex:0 0 24px; width:24px; height:24px; border-radius:7px; border:2px solid var(--line2);
+    background:#fff; position:relative; transition:.15s;}
+  .tdrow.on .tchk{background:var(--sage); border-color:var(--sage-d);}
+  .tdrow.on .tchk::after{content:"✓"; color:#fff; font-weight:900; font-size:15px; position:absolute;
+    inset:0; display:flex; align-items:center; justify-content:center;}
+  .tdrow .tnm{flex:1; min-width:0; font-size:14.5px; font-weight:700; word-break:break-all;}
+  .tdrow.on .tnm{color:var(--ink-soft); text-decoration:line-through;}
+  .tdempty{font-size:12.5px; color:var(--ink-soft); font-weight:600; padding:16px 2px; text-align:center; line-height:1.6;}
 
   header{padding:24px 0 6px; text-align:center;}
   .badge{display:inline-block; font-size:12px; letter-spacing:.3px; color:var(--sage-d);
@@ -88,23 +155,23 @@
   .todo .tx{font-size:13.5px; font-weight:800; letter-spacing:-.2px; margin-top:1px;}
   .todo .go{font-size:11.5px; font-weight:800; color:#fff; background:var(--sage); border-radius:999px; padding:6px 12px; white-space:nowrap;}
 
-  .detail{margin-top:12px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:13px 14px; box-shadow:var(--sh);}
+  .detail{margin-top:12px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:15px 18px; box-shadow:var(--sh);}
   .dh{display:flex; align-items:center; gap:8px; margin-bottom:2px;}
   .dh .di{font-size:22px;}
   .dh .dn{font-size:16px; font-weight:800;}
   .dh .dc{margin-left:auto; font-size:11.5px; font-weight:700; color:var(--sage-d); background:var(--sage-l); border:1px solid #d6e2cc; border-radius:999px; padding:3px 10px;}
   .dnote{font-size:11.5px; color:var(--sage-d); font-weight:700; line-height:1.5; background:var(--sage-l);
     border:1px solid #d6e2cc; border-radius:11px; padding:9px 11px; margin:8px 0 2px;}
-  .stamp{display:flex; align-items:flex-start; gap:11px; padding:11px 3px; cursor:pointer; border-top:1px solid #f0eee2;}
+  .stamp{display:flex; align-items:flex-start; gap:13px; padding:14px 2px; cursor:pointer; border-top:1px solid #f0eee2;}
   .stamp:first-of-type{border-top:none;}
   .stamp:active{background:#faf9f2;}
   .chk{flex:0 0 25px; width:25px; height:25px; border-radius:8px; margin-top:1px; border:2px solid var(--line2); background:#fff; position:relative; transition:.15s;}
   .stamp.cleared .chk{background:var(--sage); border-color:var(--sage-d);}
   .stamp.cleared .chk::after{content:"✓"; color:#fff; font-weight:800; font-size:15px; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;}
   .sbody{flex:1; min-width:0;}
-  .sname{font-size:14px; font-weight:700; letter-spacing:-.2px; line-height:1.4;}
+  .sname{font-size:15px; font-weight:700; letter-spacing:-.2px; line-height:1.45;}
   .stamp.cleared .sname{color:var(--ink-soft); text-decoration:line-through; text-decoration-color:#c9c6b4;}
-  .stip{font-size:11.5px; color:var(--ink-soft); margin-top:3px; line-height:1.5; font-weight:500;}
+  .stip{font-size:12.5px; color:var(--ink-soft); margin-top:5px; line-height:1.6; font-weight:500;}
   .reel-link{display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; color:#fff;
     background:var(--peach-ink); padding:4px 10px; border-radius:999px; text-decoration:none; margin-top:7px; margin-right:6px;}
   .clearline{margin-top:8px; text-align:center; font-size:12px; font-weight:700; color:#a5842f;
@@ -117,7 +184,7 @@
   .addbtn{border:none; background:var(--sage); color:#fff; font-family:inherit; font-weight:800; font-size:13px; border-radius:10px; padding:0 16px; cursor:pointer;}
 
   .rcard{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:13px 13px 9px; box-shadow:var(--sh);}
-  .rnote{font-size:12px; color:var(--peach-ink); font-weight:600; line-height:1.55; background:var(--peach-l);
+  .rnote{font-size:12.5px; color:var(--peach-ink); font-weight:600; line-height:1.8; text-align:center; background:var(--peach-l);
     border:1px solid var(--peach-line); border-radius:12px; padding:10px 11px; margin:0 1px 6px;}
   .rnote b{color:#8f5d40;}
   .rgroup{margin:13px 0 2px;}
@@ -135,6 +202,9 @@
   .rrow.done .rchk{background:var(--sage); border-color:var(--sage-d);}
   .rrow.done .rchk::after{content:"✓"; color:#fff; font-weight:800; font-size:13px; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;}
   .rfoot{display:flex; align-items:center; justify-content:space-between; padding:13px 3px 5px; font-size:12px; font-weight:700; color:var(--sage-d);}
+  .unhide{display:block; width:100%; margin-top:8px; border:1px dashed var(--line2); background:#fbfaf4;
+    font-family:inherit; font-weight:700; font-size:12px; color:var(--ink-soft); padding:9px; border-radius:10px; cursor:pointer;}
+  .unhide:active{background:var(--sage-l);}
   .rreset{border:1px solid var(--line2); background:#fff; font-family:inherit; font-weight:700; font-size:11.5px; color:var(--ink-soft); padding:5px 12px; border-radius:999px; cursor:pointer;}
 
   .tipcard{display:flex; align-items:center; gap:12px; background:var(--gold-l); border:1px solid var(--gold);
@@ -159,11 +229,24 @@
   .share-btn:active{transform:translateY(1px);}
   .share-tag{font-size:11px; color:var(--peach-ink); font-weight:700; margin-top:9px;}
 
+  .bye{margin:22px 0 0; padding:18px 18px 16px; border:1px solid var(--peach-line); border-left:4px solid var(--peach);
+    border-radius:16px; background:var(--peach-l); font-size:13.5px; line-height:1.8; color:var(--ink); font-weight:600;}
+  .bye .byet{font-weight:800; color:var(--peach-ink); margin-bottom:10px;}
+  .bye p{margin:0 0 13px;}
+  .bye p:last-of-type{margin-bottom:0;}
+  .bye b{color:var(--sage-d);}
+  .byebtn{display:block; text-align:center; margin-top:14px; padding:12px; border-radius:12px;
+    background:var(--sage); color:#fff; text-decoration:none; font-weight:800; font-size:13.5px;}
+  .byebtn:active{opacity:.85;}
+  .legal{margin:20px 0 0; padding:13px 15px; border:1px solid var(--line); border-radius:12px;
+    background:#fbfaf4; font-size:11px; line-height:1.75; color:var(--ink-soft); font-weight:600; text-align:center;}
+  .legal b{color:var(--ink);}
+  .legal .warn{display:inline-block; margin-top:6px; color:#b1635c; font-weight:800;}
   footer{text-align:center; padding:18px 0 8px; font-size:11px; color:#a49c88; font-weight:600;}
 
   .toolbar{position:fixed; left:0; right:0; bottom:0; z-index:40; background:rgba(245,243,234,.94); backdrop-filter:blur(8px);
     border-top:1px solid var(--line2); padding:10px 12px calc(10px + env(safe-area-inset-bottom));}
-  .toolbar .inner{max-width:520px; margin:0 auto; display:flex; gap:8px;}
+  .toolbar .inner{max-width:680px; margin:0 auto; display:flex; gap:8px;}
   .tbtn{flex:1; background:var(--card); border:1px solid var(--line2); border-radius:12px; padding:11px 4px; font-weight:800; font-size:12.5px; color:var(--ink); cursor:pointer; font-family:inherit; text-align:center;}
   .tbtn:active{background:#eeece2;}
   .tbtn .ic{font-size:14px; margin-right:4px;}
@@ -196,13 +279,30 @@
 </style>
 </head>
 <body>
+<a class="igbar" href="https://instagram.com/jubu_map" target="_blank" rel="noopener"><svg class="igico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.4" fill="currentColor"/></svg>주부지도 인스타그램 바로가기 @jubu_map</a>
 <div class="wrap">
 
   <header>
     <span class="badge">🏠 하루 30분, 한 공간씩 살림 소생</span>
     <h1>우리집 살림 <span class="em">도장깨기</span> 지도</h1>
-    <p class="slogan">방 하나씩 톡 누르면 할 일이 열려요.<br>하루 30분, 도장 깨듯 우리집을 되살리는 지도예요.</p>
-    <div class="whycard">📌 청소 <b>주기·순서</b>부터 <b>천연세제</b>까지 — 흩어진 살림 정보를 한 장에 모았어요</div>
+    <div class="hello">
+      <span class="hi">안녕하세요, 주부지도입니다 :)</span>
+      <p>어느 순간부터 육아에 살림에 치여<br>
+      급한 불만 끄다보니 어딘가 모르게 너저분하고,<br>
+      막상 큰 맘 먹고 시작하려니<br>
+      어디서부터 손을 대야 할지 막막하더라구요,,</p>
+      <p>그래서 집 전체가 아니라 <b>한 공간씩 도장깨기 하듯</b><br>
+      정리하던 도중, 한 눈에 보면서 정리할 수 있도록<br>
+      체크리스트가 있으면 좋을 것 같아<br>
+      살림 도장깨기 지도를 만들었어요!</p>
+      <p><b>구역별, 루틴별로 살림 주기를 나누고,</b><br>
+      체크리스트와 살림팁을 담아봤는데<br>
+      도움이 되셨으면 좋겠습니다 :)</p>
+      <p>하루 30분, 완벽하지 않아도 괜찮아요!<br>
+      집 안을 같이 도장깨기 하듯 하나씩 정리하다 보면<br>
+      깔끔해져가는 모습에 조금씩 애정도 생기더라구요!<br>
+      함께 애정이 가는 집으로 같이 만들어가요 :)</p>
+    </div>
   </header>
 
   <div class="panel">
@@ -225,32 +325,39 @@
   <div class="chal" id="chal"></div>
 
   <div class="maphead">
-    <h2>🗺️ 우리집 한 눈에 보기</h2>
+    <h2>🎯 우리집 도장깨기</h2>
+    <span class="cnt" id="tdCnt">0 / 0 완료</span>
+  </div>
+  <div class="todaycard">
+    <div id="tdList"></div>
+    <div class="addrow">
+      <input class="addin" id="tdIn" type="text" placeholder="오늘 할 일을 적어보세요 (예: 냉장고 한 칸)" maxlength="40">
+      <button class="addbtn" id="tdBtn">추가</button>
+    </div>
+  </div>
+
+  <div class="navbtns">
+    <button class="navbtn" id="goPlan">🗺️<br>구역별<br>살림 리스트</button>
+    <button class="navbtn" id="goRoutine">🔁<br>살림<br>루틴</button>
+    <a class="navbtn" href="https://www.instagram.com/p/DXsllkdkxet/?img_index=1" target="_blank" rel="noopener">🧪<br>천연세제<br>활용법</a>
+  </div>
+
+  <div class="maphead" id="planHead">
+    <h2>🗺️ 구역별 살림 리스트</h2>
   </div>
 
   <div class="house">
     <div class="plan" id="plan"></div>
-    <div class="plemsg">완벽하지 않아도 <b>80%만</b> 해도 충분해요<br>공간을 누르면 할 일 리스트가 열리는데, 항목 추가도 가능해요</div>
+    <div class="plemsg">완벽하지 않아도 <b>80%만</b> 해도 충분해요<br>공간을 누르면 할 일 리스트가 열리는데, 항목 추가 및 삭제도 가능해요</div>
   </div>
-
-  <div class="todo" id="todo"></div>
 
   <div class="detail" id="detail"></div>
 
-  <div class="maphead">
+  <div class="maphead" id="routineHead">
     <h2>🔁 살림 루틴</h2>
     <span class="hint">데일리·요일별·주간·월간</span>
   </div>
   <div id="routine"></div>
-
-  <div class="tipcard">
-    <div class="tipico">🧪</div>
-    <div class="tipbody">
-      <div class="tiptitle">천연세제 활용법 한 눈에 확인하기</div>
-      <div class="tipdesc">쓸 때마다 헷갈리는 천연세제 5종 — 언제 뭘 쓸지 한 장에 정리</div>
-    </div>
-    <a class="reel" href="https://www.instagram.com/p/DXsllkdkxet/?img_index=1" target="_blank" rel="noopener">▶ 보기</a>
-  </div>
 
   <div class="cta">
     <h3>같이 정리해요 💪</h3>
@@ -264,6 +371,46 @@
     <p>혼자보단 함께하면 지치지 않고 끝까지 갈 수 있어요 :)</p>
     <button class="share-btn" id="shareBtn">📷 우리집 살림 도장깨기 인증하기</button>
     <div class="share-tag">#우리집살림도장깨기챌린지</div>
+  </div>
+
+  <div class="bye">
+    <div class="byet">💌 마지막으로,</div>
+    <p>사용해보시고 혹시 궁금한 점이나<br>
+    고민되는 부분이 있으면 편하게 DM 주시면</p>
+    <p>늦더라도 꼭 확인하고 답변드릴게요 :)<br>
+    (같이 이야기 나누다보면 내적 친밀감이 쌓인답니다.. 😍)</p>
+    <a class="byebtn" href="https://instagram.com/jubu_map" target="_blank" rel="noopener"><svg class="igico" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.4" fill="currentColor"/></svg>@jubu_map 인스타그램 바로 가기</a>
+  </div>
+
+  <div class="savecard" id="saveCard">
+    <div class="savetop" id="saveTop">📲 살림 도장깨기 기록 저장하는 법 (앱으로 활용하기)<span class="car">▶</span></div>
+    <div class="savebody"><div class="in">
+      <div class="savewarn">⚠️ 인스타 앱 안에서 열면 체크가 안 남아요!<br>먼저 오른쪽 위 <b>···</b> → <b>Safari(또는 Chrome)로 열기</b>를 눌러주세요.</div>
+      <div class="step"><b>아이폰</b> — 사파리 아래 <b>공유 버튼(↑)</b> → <b>홈 화면에 추가</b></div>
+      <div class="step"><b>안드로이드</b> — 크롬 오른쪽 위 <b>⋮</b> → <b>홈 화면에 추가</b></div>
+      홈 화면에 아이콘이 생기면 앱처럼 바로 열려요.<br>
+      체크한 항목·추가한 할 일·루틴은 <b>이 기기에 그대로 저장</b>되니까, 다음에 열어도 이어서 하시면 돼요 :)
+    </div></div>
+  </div>
+
+  <div class="savecard" id="bkCard">
+    <div class="savetop" id="bkTop">💾 기기를 바꾸는 경우 - 진행상황 백업, 복원하기<span class="car">▶</span></div>
+    <div class="savebody"><div class="in">
+      휴대폰을 바꾸거나 브라우저 기록을 지우면 체크가 사라져요.<br>
+      <b>백업 코드</b>를 만들어 카톡 <b>'나에게 보내기'</b>에 저장해두면, 새 기기에서 그대로 불러올 수 있어요.
+      <textarea class="bkta" id="bkTa" placeholder="① 백업: 아래 버튼을 누르면 코드가 여기 나와요 (복사해서 보관)&#10;② 복원: 저장해둔 코드를 여기 붙여넣고 복원 버튼을 눌러주세요"></textarea>
+      <div class="bkbtns">
+        <button class="bkbtn" id="bkOut">백업 코드 만들기</button>
+        <button class="bkbtn sec" id="bkIn">코드로 복원하기</button>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="legal">
+    <b>ⓒ 주부지도(@jubu_map). All rights reserved.</b><br>
+    본 자료의 <b>무단 배포·재업로드·캡처·복제</b> 및 <b>상업적 사용</b>을 금지합니다.<br>
+    개인적인 용도로만 사용해 주시고, 공유가 필요하시면 이 링크를 그대로 전달해 주세요.<br>
+    <span class="warn">⚠️ 무단 상업적 활용이 확인될 경우 법적 조치가 이뤄질 수 있습니다.</span>
   </div>
 
   <footer>@jubu_map · 우리집 살림 도장깨기</footer>
@@ -310,7 +457,7 @@ const REELS = {
 const MAP = [
   { icon:"🚪", title:"현관", span:1, stamps:[
       {n:"바닥 쓸기", t:"빗자루로 먼지 쓸고 — 비·눈 오는 날엔 안 쓰는 박스를 현관 앞에 두면 바닥 더러워지는 걸 예방해요"},
-      {n:"오래되거나 안 신는 신발 정리", t:"우리가 실제로 신는 신발은 전체의 20%래요. 1년 안 신었으면 과감히 — 신발장 숨통이 트여요"},
+      {n:"오래되거나 안 신는 신발 정리", t:"우리가 실제로 신는 신발은 전체의 20% 정도래요. 1년 이상 신지 않았다면 과감히 비워요. 살린 공간은 간이 팬트리로도 활용 가능해요"},
       {n:"외출 동선에 따라 자리 정해주기", t:"장바구니·바깥놀이 장난감·우산·택배용 칼·가위를 수납하면 동선이 편해져요"}
     ]},
   { icon:"🍳", title:"주방", span:2, stamps:[
@@ -343,10 +490,10 @@ const MAP = [
       {n:"세탁기 통세척 (순서대로)", t:"①잔수 빼고 거름망·고무패킹 물기 닦기 → ②세제함 빼서 세척 → ③무세제 통세척(월 1회) → ④세탁조 클리너 통세척(3~4달 1회)"},
       {n:"건조기 필터 세척", t:"필터 먼지는 쓸 때마다 물세척으로 제거해요"},
       {n:"건조기 통살균", t:"통살균 월 1회"},
-      {n:"건조기 콘덴서 케어", t:"콘덴서 케어 2주 1회"}
+      {n:"건조기 콘덴서 케어하기", t:"콘덴서 케어는 2주 1회 (건조기 필터는 매 사용 시 청소해야 해요)"}
     ]},
   { icon:"🌿", title:"베란다", span:2, stamps:[
-      {n:"창틀 먼지 + 방충망 청소", t:"대야에 따뜻한물+퐁퐁, 스펀지나 수면양말에 적셔 부드럽게. 창틀 홈은 붓으로 닦으면 힘 안 들어요"},
+      {n:"창틀 먼지 + 방충망 청소", t:"대야에 따뜻한물+퐁퐁, 스펀지나 수면양말에 적셔 부드럽게 문지르고, 창틀 구석은 붓으로 쓸어주면 쉽게 닦을 수 있어요"},
       {n:"사용하지 않는 물건 비우기", t:"베란다는 물건 둥지가 되기 쉬워요 — 1년 이상 쓰지 않는 물건은 비우기"}
     ]},
   { icon:"🛋️", title:"거실", span:1, stamps:[
@@ -399,8 +546,8 @@ const ROUTINE = [
 const STORE_KEY = "jubumap_progress_v11";
 let state = load();
 function load(){
-  try{ const s=JSON.parse(localStorage.getItem(STORE_KEY))||{}; s.cleared=s.cleared||{}; s.routine=s.routine||{}; s.custom=s.custom||{}; s.rcustom=s.rcustom||{}; if(s.sel===undefined)s.sel=0; if(s.joined===undefined)s.joined=null; return s; }
-  catch(e){ return {cleared:{}, routine:{}, custom:{}, rcustom:{}, sel:0, joined:null}; }
+  try{ const s=JSON.parse(localStorage.getItem(STORE_KEY))||{}; s.cleared=s.cleared||{}; s.routine=s.routine||{}; s.custom=s.custom||{}; s.rcustom=s.rcustom||{}; s.today=s.today||[]; s.hidden=s.hidden||{}; if(s.sel===undefined)s.sel=0; if(s.joined===undefined)s.joined=null; return s; }
+  catch(e){ return {cleared:{}, routine:{}, custom:{}, rcustom:{}, today:[], sel:0, joined:null}; }
 }
 function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){} }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -410,8 +557,11 @@ const isCl=(z,s)=>!!state.cleared[K(z,s)];
 function customList(z){ return (state.custom&&state.custom[z])||[]; }
 const custKey=id=>"u-"+id;
 const isCustCl=id=>!!state.cleared[custKey(id)];
-const cnt=z=>MAP[z].stamps.filter((_,s)=>isCl(z,s)).length + customList(z).filter(it=>isCustCl(it.id)).length;
-const len=z=>MAP[z].stamps.length + customList(z).length;
+const hidKey=(z,s)=>"h"+z+"-"+s;
+const isHid=(z,s)=>!!(state.hidden&&state.hidden[hidKey(z,s)]);
+const cnt=z=>MAP[z].stamps.filter((_,s)=>!isHid(z,s)&&isCl(z,s)).length + customList(z).filter(it=>isCustCl(it.id)).length;
+const len=z=>MAP[z].stamps.filter((_,s)=>!isHid(z,s)).length + customList(z).length;
+const hidCount=z=>MAP[z].stamps.filter((_,s)=>isHid(z,s)).length;
 const dn=z=>len(z)>0 && cnt(z)===len(z);
 const total=()=>MAP.reduce((a,z,zi)=>a+len(zi),0);
 const totCl=()=>MAP.reduce((a,z,zi)=>a+cnt(zi),0);
@@ -449,17 +599,19 @@ function reelBtns(zone,name){
 }
 function detail(){
   const zi=state.sel, z=MAP[zi];
-  const rows=z.stamps.map((s,si)=>`<div class="stamp ${isCl(zi,si)?'cleared':''}" data-s="${si}">
-    <div class="chk"></div><div class="sbody"><div class="sname">${s.n}</div>${s.t?`<div class="stip">${s.t}</div>`:''}${reelBtns(z.title,s.n)}</div></div>`).join("");
+  const rows=z.stamps.map((s,si)=> isHid(zi,si) ? "" : `<div class="stamp ${isCl(zi,si)?'cleared':''}" data-s="${si}">
+    <div class="chk"></div><div class="sbody"><div class="sname">${s.n}</div>${s.t?`<div class="stip">${s.t}</div>`:''}${reelBtns(z.title,s.n)}</div>
+    <button class="cdel" data-hid="${si}" aria-label="삭제">×</button></div>`).join("");
   const crows=customList(zi).map(it=>`<div class="stamp cust ${isCustCl(it.id)?'cleared':''}" data-cid="${it.id}">
     <div class="chk"></div><div class="sbody"><div class="sname">${esc(it.n)}</div></div>
     <button class="cdel" data-del="${it.id}" aria-label="삭제">×</button></div>`).join("");
   const c=cnt(zi), l=len(zi), done=l>0&&c===l;
   detailEl.innerHTML=`<div class="dh"><span class="di">${z.icon}</span><span class="dn">${z.title}</span><span class="dc">${c}/${l}</span></div>${z.note?`<div class="dnote">📋 ${z.note}</div>`:''}${rows}${crows}
     <div class="addrow"><input class="addin" id="addin" type="text" placeholder="이 방에 나만의 할 일 추가" maxlength="40"><button class="addbtn" id="addbtn">추가</button></div>
+    ${hidCount(zi)?`<button class="unhide" id="unhideBtn">↺ 지운 기본 항목 ${hidCount(zi)}개 되살리기</button>`:''}
     ${done?'<div class="clearline">🎉 이 방 클리어! 한 끗 차이로 살아났어요</div>':''}`;
   detailEl.querySelectorAll('.stamp[data-s]').forEach(el=>el.addEventListener('click',(e)=>{
-    if(e.target.closest('.reel-link')) return;
+    if(e.target.closest('.reel-link')||e.target.closest('.cdel')) return;
     const si=+el.dataset.s, k=K(zi,si), was=dn(zi);
     if(state.cleared[k])delete state.cleared[k]; else{state.cleared[k]=1; pop(el);}
     save(); plan(); detail(); panel(); recommend();
@@ -472,11 +624,22 @@ function detail(){
     save(); plan(); detail(); panel(); recommend();
     if(!was&&dn(zi)) celebrateZone(z);
   }));
-  detailEl.querySelectorAll('.cdel').forEach(b=>b.addEventListener('click',(e)=>{
+  detailEl.querySelectorAll('.cdel[data-del]').forEach(b=>b.addEventListener('click',(e)=>{
     e.stopPropagation(); const id=b.dataset.del;
     state.custom[zi]=customList(zi).filter(it=>it.id!==id); delete state.cleared[custKey(id)];
     save(); plan(); detail(); panel(); recommend();
   }));
+  detailEl.querySelectorAll('.cdel[data-hid]').forEach(b=>b.addEventListener('click',(e)=>{
+    e.stopPropagation(); const si=+b.dataset.hid;
+    if(!state.hidden) state.hidden={};
+    state.hidden[hidKey(zi,si)]=1; delete state.cleared[K(zi,si)];
+    save(); plan(); detail(); panel(); recommend(); toast("항목을 지웠어요 (아래 '기본 항목 되살리기'로 복구할 수 있어요)");
+  }));
+  const unB=document.getElementById('unhideBtn');
+  if(unB) unB.addEventListener('click',()=>{
+    MAP[zi].stamps.forEach((_,si)=>{ if(state.hidden) delete state.hidden[hidKey(zi,si)]; });
+    save(); plan(); detail(); panel(); recommend(); toast("기본 항목을 되살렸어요 ↺");
+  });
   const addBtn=document.getElementById('addbtn'), addIn=document.getElementById('addin');
   function doAdd(){ const v=addIn.value.trim(); if(!v)return; if(!state.custom)state.custom={}; if(!state.custom[zi])state.custom[zi]=[]; state.custom[zi].push({id:"c"+Date.now()+Math.floor(Math.random()*999), n:v}); save(); detail(); plan(); panel(); recommend(); toast("나만의 할 일을 추가했어요 ✏️"); }
   if(addBtn) addBtn.addEventListener('click',doAdd);
@@ -491,6 +654,7 @@ function pop(el){
 }
 function recommend(){
   const el=document.getElementById('todo');
+  if(!el) return;
   // 사용자가 고른 공간 우선, 그 공간이 끝났으면 남은 첫 공간
   let zi = (state.sel!=null && !dn(state.sel)) ? state.sel : -1;
   if(zi<0){ for(let i=0;i<MAP.length;i++){ if(!dn(i)){ zi=i; break; } } }
@@ -515,6 +679,86 @@ function chalRender(){
     el.innerHTML=`<div class="chal-t">🔥 함께 살림 도장깨기 중 · <b>${days}일째</b> 💪</div>`;
   }
 }
+
+/* ===== 오늘의 할 일 ===== */
+function renderTd(){
+  if(!state.today) state.today=[];
+  const el=document.getElementById('tdList');
+  const done=state.today.filter(t=>t.d).length;
+  document.getElementById('tdCnt').textContent=done+" / "+state.today.length+" 완료";
+  if(state.today.length===0){
+    el.innerHTML=`<div class="tdempty">오늘 깰 한 칸을 적어보세요.<br>딱 하나만 적어도 충분해요 :)</div>`;
+    return;
+  }
+  el.innerHTML=state.today.map((t,i)=>
+    `<div class="tdrow ${t.d?'on':''}" data-i="${i}"><div class="tchk"></div><div class="tnm">${esc(t.n)}</div><button class="cdel" data-tdel="${i}">×</button></div>`
+  ).join("");
+  el.querySelectorAll('.tdrow').forEach(r=>r.addEventListener('click',e=>{
+    if(e.target.closest('.cdel')) return;
+    const i=+r.dataset.i;
+    const wasAll = state.today.length>0 && state.today.every(t=>t.d);
+    state.today[i].d=!state.today[i].d; save(); renderTd();
+    const isAll = state.today.length>0 && state.today.every(t=>t.d);
+    if(isAll && !wasAll){ conf(); toast("🎉 오늘 할 일 전부 클리어! 오늘은 좀 쉬어요"); }
+    else if(state.today[i].d) toast("한 칸 깼어요! 👏");
+  }));
+  el.querySelectorAll('.cdel').forEach(b=>b.addEventListener('click',e=>{
+    e.stopPropagation(); state.today.splice(+b.dataset.tdel,1); save(); renderTd();
+  }));
+}
+function tdAdd(){
+  const inp=document.getElementById('tdIn'), v=inp.value.trim();
+  if(!v) return;
+  if(!state.today) state.today=[];
+  state.today.push({n:v, d:false}); inp.value=""; save(); renderTd(); toast("오늘 할 일에 추가했어요 ✏️");
+}
+document.getElementById('tdBtn').addEventListener('click', tdAdd);
+document.getElementById('tdIn').addEventListener('keydown', e=>{ if(e.key==='Enter') tdAdd(); });
+
+/* ===== 저장 안내 열기/닫기 ===== */
+document.getElementById('saveTop').addEventListener('click',()=>{
+  document.getElementById('saveCard').classList.toggle('open');
+});
+
+/* ===== 백업 · 복원 ===== */
+document.getElementById('bkTop').addEventListener('click',()=>{
+  document.getElementById('bkCard').classList.toggle('open');
+});
+function b64enc(s){ const b=new TextEncoder().encode(s); let x=""; b.forEach(c=>x+=String.fromCharCode(c)); return btoa(x); }
+function b64dec(s){ const bin=atob(s); const a=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i); return new TextDecoder().decode(a); }
+document.getElementById('bkOut').addEventListener('click',()=>{
+  try{
+    const code="JUBU1:"+b64enc(JSON.stringify(state));
+    const ta=document.getElementById('bkTa'); ta.value=code; ta.focus(); ta.select();
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code)
+        .then(()=>toast("백업 코드를 복사했어요! 카톡 '나에게 보내기'에 붙여넣어 두세요 💾"))
+        .catch(()=>toast("코드가 만들어졌어요. 길게 눌러 복사해주세요"));
+    } else toast("코드가 만들어졌어요. 길게 눌러 복사해주세요");
+  }catch(e){ toast("백업 코드를 만들지 못했어요"); }
+});
+document.getElementById('bkIn').addEventListener('click',()=>{
+  const raw=document.getElementById('bkTa').value.trim();
+  if(!raw){ toast("저장해둔 백업 코드를 붙여넣어 주세요"); return; }
+  try{
+    const body = raw.startsWith("JUBU1:") ? raw.slice(6) : raw;
+    const obj = JSON.parse(b64dec(body));
+    if(!obj || typeof obj!=="object" || !obj.cleared) throw new Error("bad");
+    if(!confirm("지금 기록을 백업 코드의 내용으로 바꿀까요?\n현재 체크한 내용은 사라져요.")) return;
+    Object.keys(state).forEach(k=>{ delete state[k]; });
+    Object.assign(state, obj);
+    state.cleared=state.cleared||{}; state.routine=state.routine||{};
+    state.custom=state.custom||{}; state.rcustom=state.rcustom||{}; state.today=state.today||[]; state.hidden=state.hidden||{};
+    if(state.sel===undefined) state.sel=0;
+    save(); plan(); detail(); panel(); chalRender(); renderR(); renderTd();
+    toast("복원했어요! 이어서 도장 깨봐요 🎉");
+  }catch(e){ toast("코드가 올바르지 않아요. 다시 확인해주세요"); }
+});
+
+/* ===== 섹션 이동 버튼 ===== */
+function goTo(id){ const t=document.getElementById(id); if(t) t.scrollIntoView({behavior:'smooth', block:'start'}); }
+document.getElementById('goPlan').addEventListener('click', ()=>goTo('planHead'));
+document.getElementById('goRoutine').addEventListener('click', ()=>goTo('routineHead'));
 
 /* ===== 하단 공유 (인증 이미지 생성) ===== */
 const FONT="'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif";
@@ -591,20 +835,30 @@ function renderR(){
   if(!state.rcustom) state.rcustom={};
   let d=0,t=0;
   const blocks=ROUTINE.map((g,gi)=>{
-    const rows=g.items.map((it,ii)=>{const k=gi+"-"+ii,on=!!state.routine[k]; t++; if(on)d++;
-      return `<div class="rrow ${on?'done':''}" data-k="${k}"><div class="rbody"><div class="rname">${it.n}</div>${it.t?`<div class="rtip">${it.t}</div>`:''}</div><div class="rchk"></div></div>`;}).join("");
+    const rows=g.items.map((it,ii)=>{const hk="hr"+gi+"-"+ii; if(state.hidden&&state.hidden[hk]) return "";
+      const k=gi+"-"+ii,on=!!state.routine[k]; t++; if(on)d++;
+      return `<div class="rrow ${on?'done':''}" data-k="${k}"><div class="rbody"><div class="rname">${it.n}</div>${it.t?`<div class="rtip">${it.t}</div>`:''}</div><button class="cdel" data-rhid="${gi}-${ii}" aria-label="삭제">×</button><div class="rchk"></div></div>`;}).join("");
     const crows=(state.rcustom[gi]||[]).map(it=>{const rk="ru-"+it.id,on=!!state.routine[rk]; t++; if(on)d++;
       return `<div class="rrow rcust ${on?'done':''}" data-rid="${it.id}"><div class="rbody"><div class="rname">${esc(it.n)}</div></div><button class="cdel" data-rdel="${it.id}" data-g="${gi}" aria-label="삭제">×</button><div class="rchk"></div></div>`;}).join("");
     return `<div class="rgroup"><div class="rghead"><span class="rgbadge" style="background:${g.c}">${g.g}</span><span class="rgtag">${g.tag}</span></div>${rows}${crows}
       <div class="addrow"><input class="addin radd" data-g="${gi}" type="text" placeholder="${g.g} 루틴에 나만의 루틴 추가" maxlength="40"><button class="addbtn raddbtn" data-g="${gi}">추가</button></div></div>`;
   }).join("");
-  rEl.innerHTML=`<div class="rcard"><div class="rnote">🔖 완벽하지 않아도 <b>80%만 해도 충분해요!</b> :) 주기만 맞춰도 훨씬 편해져요</div>${blocks}<div class="rfoot"><span>체크 ${d}/${t} ${d===t&&t>0?'🎉':''}</span><button class="rreset" id="rReset">체크 지우기</button></div></div>`;
-  rEl.querySelectorAll('.rrow[data-k]').forEach(row=>row.addEventListener('click',()=>{const k=row.dataset.k; if(state.routine[k])delete state.routine[k]; else state.routine[k]=1; save(); renderR();}));
+  const rHid=Object.keys(state.hidden||{}).filter(k=>k.indexOf("hr")===0).length;
+  rEl.innerHTML=`<div class="rcard"><div class="rnote">🔖 완벽하지 않아도 <b>80%만 해도 충분해요!</b> :)<br>주기만 맞춰도 훨씬 편해져요</div>${blocks}${rHid?`<button class="unhide" id="rUnhide">↺ 지운 루틴 ${rHid}개 되살리기</button>`:''}<div class="rfoot"><span>체크 ${d}/${t} ${d===t&&t>0?'🎉':''}</span><button class="rreset" id="rReset">체크 지우기</button></div></div>`;
+  rEl.querySelectorAll('.rrow[data-k]').forEach(row=>row.addEventListener('click',(e)=>{ if(e.target.closest('.cdel'))return; const k=row.dataset.k; if(state.routine[k])delete state.routine[k]; else state.routine[k]=1; save(); renderR();}));
+  rEl.querySelectorAll('.cdel[data-rhid]').forEach(b=>b.addEventListener('click',(e)=>{
+    e.stopPropagation(); const key=b.dataset.rhid;
+    if(!state.hidden) state.hidden={};
+    state.hidden["hr"+key]=1; delete state.routine[key];
+    save(); renderR(); toast("루틴 항목을 지웠어요 (아래 '되살리기'로 복구할 수 있어요)");
+  }));
   rEl.querySelectorAll('.rrow.rcust').forEach(row=>row.addEventListener('click',(e)=>{ if(e.target.closest('.cdel'))return; const k="ru-"+row.dataset.rid; if(state.routine[k])delete state.routine[k]; else state.routine[k]=1; save(); renderR();}));
   rEl.querySelectorAll('.cdel[data-rdel]').forEach(b=>b.addEventListener('click',(e)=>{e.stopPropagation(); const gi=b.dataset.g,id=b.dataset.rdel; state.rcustom[gi]=(state.rcustom[gi]||[]).filter(it=>it.id!==id); delete state.routine["ru-"+id]; save(); renderR();}));
   function radd(gi,inp){ const v=inp.value.trim(); if(!v)return; if(!state.rcustom[gi])state.rcustom[gi]=[]; state.rcustom[gi].push({id:"r"+Date.now()+Math.floor(Math.random()*999),n:v}); save(); renderR(); toast("나만의 루틴을 추가했어요 ✏️"); }
   rEl.querySelectorAll('.raddbtn').forEach(btn=>btn.addEventListener('click',()=>{ radd(btn.dataset.g, rEl.querySelector('.radd[data-g="'+btn.dataset.g+'"]')); }));
   rEl.querySelectorAll('.radd').forEach(inp=>inp.addEventListener('keydown',e=>{ if(e.key==='Enter') radd(inp.dataset.g, inp); }));
+  const rU=document.getElementById('rUnhide');
+  if(rU) rU.addEventListener('click',()=>{ Object.keys(state.hidden||{}).forEach(k=>{ if(k.indexOf("hr")===0) delete state.hidden[k]; }); save(); renderR(); toast("루틴 항목을 되살렸어요 ↺"); });
   document.getElementById('rReset').addEventListener('click',()=>{state.routine={}; save(); renderR(); toast("체크를 지웠어요. 부담 없이 다시 시작해요");});
 }
 
@@ -647,7 +901,7 @@ tGo.addEventListener('click',()=>{
 tReset.addEventListener('click',()=>{ stopTick(); remain=30*60; elapsed=0; drawClock(); tGo.textContent="시작"; tstate.textContent=tmode==="timer"?"준비되면 시작을 눌러요":"0부터 재요. 준비되면 시작"; });
 
 if(state.sel===undefined) state.sel=0;
-drawClock(); plan(); detail(); panel(); recommend(); chalRender(); renderR();
+drawClock(); plan(); detail(); panel(); recommend(); chalRender(); renderR(); renderTd();
 </script>
 </body>
 </html>

@@ -202,6 +202,10 @@
   .rrow.done .rchk{background:var(--sage); border-color:var(--sage-d);}
   .rrow.done .rchk::after{content:"✓"; color:#fff; font-weight:800; font-size:13px; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;}
   .rfoot{display:flex; align-items:center; justify-content:space-between; padding:13px 3px 5px; font-size:12px; font-weight:700; color:var(--sage-d);}
+  .zreset{display:block; margin:9px 0 0 auto; border:1px solid var(--line2); background:#fff;
+    font-family:inherit; font-weight:700; font-size:11.5px; color:var(--ink-soft);
+    padding:7px 14px; border-radius:999px; cursor:pointer;}
+  .zreset:active{background:var(--sage-l); border-color:var(--sage);}
   .unhide{display:block; width:100%; margin-top:8px; border:1px dashed var(--line2); background:#fbfaf4;
     font-family:inherit; font-weight:700; font-size:12px; color:var(--ink-soft); padding:9px; border-radius:10px; cursor:pointer;}
   .unhide:active{background:var(--sage-l);}
@@ -609,6 +613,7 @@ function detail(){
   detailEl.innerHTML=`<div class="dh"><span class="di">${z.icon}</span><span class="dn">${z.title}</span><span class="dc">${c}/${l}</span></div>${z.note?`<div class="dnote">📋 ${z.note}</div>`:''}${rows}${crows}
     <div class="addrow"><input class="addin" id="addin" type="text" placeholder="이 방에 나만의 할 일 추가" maxlength="40"><button class="addbtn" id="addbtn">추가</button></div>
     ${hidCount(zi)?`<button class="unhide" id="unhideBtn">↺ 지운 기본 항목 ${hidCount(zi)}개 되살리기</button>`:''}
+    ${c>0?`<button class="zreset" id="zResetBtn">↺ ${z.title} 체크 지우기</button>`:''}
     ${done?'<div class="clearline">🎉 이 방 클리어! 한 끗 차이로 살아났어요</div>':''}`;
   detailEl.querySelectorAll('.stamp[data-s]').forEach(el=>el.addEventListener('click',(e)=>{
     if(e.target.closest('.reel-link')||e.target.closest('.cdel')) return;
@@ -635,6 +640,13 @@ function detail(){
     state.hidden[hidKey(zi,si)]=1; delete state.cleared[K(zi,si)];
     save(); plan(); detail(); panel(); recommend(); toast("항목을 지웠어요 (아래 '기본 항목 되살리기'로 복구할 수 있어요)");
   }));
+  const zR=document.getElementById('zResetBtn');
+  if(zR) zR.addEventListener('click',()=>{
+    if(!confirm(z.title+" 체크를 모두 지울까요?\n(추가한 항목은 그대로 남아요)")) return;
+    MAP[zi].stamps.forEach((_,si)=>{ delete state.cleared[K(zi,si)]; });
+    customList(zi).forEach(it=>{ delete state.cleared[custKey(it.id)]; });
+    save(); plan(); detail(); panel(); recommend(); toast(z.title+" 체크를 지웠어요. 다시 깨봐요 💪");
+  });
   const unB=document.getElementById('unhideBtn');
   if(unB) unB.addEventListener('click',()=>{
     MAP[zi].stamps.forEach((_,si)=>{ if(state.hidden) delete state.hidden[hidKey(zi,si)]; });
